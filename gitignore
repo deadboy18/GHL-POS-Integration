@@ -1,0 +1,33 @@
+# Windows
+desktop.ini
+Thumbs.db
+ehthumbs.db
+
+# VS / C#
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.pdb
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+simulator_config.json
+
+# Compiled binaries (use GitHub Releases instead)
+*.exe
+
+# OS files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace

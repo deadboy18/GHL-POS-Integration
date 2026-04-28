@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1360" height="2120" viewBox="0 0 680 1060" xmlns="http://www.w3.org/2000/svg">
+<title>PAX L920-BE Custom RS232 Cable - Complete Wiring Guide</title>
+<desc>Foolproof wiring diagram: RJ45 pin 5 (White/Blue) to DB9 pin 3 (TXD), RJ45 pin 6 (Green) to DB9 pin 4 (DTR), RJ45 pin 7 (White/Brown) to DB9 pin 1 (DCD). Only 3 of 8 wires used. Prolific PL2303 chipset required, FTDI does not work.</desc>
+<style>
+  text { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+  .th { font-size: 14px; font-weight: 600; fill: #2C2C2A; }
+  .ts { font-size: 12px; font-weight: 400; fill: #5F5E5A; }
+  .box-blue { fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5px; }
+  .box-blue .th { fill: #0C447C; }
+  .box-blue .ts { fill: #185FA5; }
+  .box-green { fill: #EAF3DE; stroke: #3B6D11; stroke-width: 0.5px; }
+  .box-green .th { fill: #27500A; }
+  .box-green .ts { fill: #3B6D11; }
+  .box-coral { fill: #FAECE7; stroke: #993C1D; stroke-width: 0.5px; }
+  .box-coral .th { fill: #712B13; }
+  .box-coral .ts { fill: #993C1D; }
+  .box-gray { fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.5px; }
+  .box-gray .th { fill: #444441; }
+  .box-gray .ts { fill: #5F5E5A; }
+  .box-teal { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5px; }
+  .box-teal .th { fill: #085041; }
+  .box-teal .ts { fill: #0F6E56; }
+  .box-red { fill: #FCEBEB; stroke: #A32D2D; stroke-width: 0.5px; }
+  .box-red .th { fill: #791F1F; }
+  .box-red .ts { fill: #A32D2D; }
+</style>
+
+<text class="th" x="340" y="24" text-anchor="middle">PAX L920-BE custom RS232 cable wiring</text>
+<text class="ts" x="340" y="42" text-anchor="middle">Only 3 of the 8 wires are used -- confirmed working</text>
+
+<text class="th" x="140" y="78" fill="#2C2C2A">RJ45 plug (goes into L920 base)</text>
+<text class="ts" x="140" y="96" fill="#5F5E5A">T568B standard -- clip facing away, left to right</text>
+
+<rect x="54" y="115" width="280" height="34" rx="6" fill="none" stroke="#5F5E5A" stroke-width="1.5"/>
+<rect x="94" y="108" width="50" height="10" rx="3" fill="none" stroke="#5F5E5A" stroke-width="1"/>
+
+<rect x="62" y="120" width="26" height="24" rx="2" fill="#F5E6D0" stroke="#D4A06A" stroke-width="0.5"/>
+<text class="ts" x="75" y="160" text-anchor="middle" fill="#999">1</text>
+<path d="M75 149 L75 188" stroke="#D4A06A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.3"/>
+<text class="ts" x="75" y="203" text-anchor="middle" fill="#AAA">W/O</text>
+
+<rect x="96" y="120" width="26" height="24" rx="2" fill="#E88830" stroke="#D4A06A" stroke-width="0.5"/>
+<text class="ts" x="109" y="160" text-anchor="middle" fill="#999">2</text>
+<path d="M109 149 L109 188" stroke="#E88830" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.3"/>
+<text class="ts" x="109" y="203" text-anchor="middle" fill="#AAA">O</text>
+
+<rect x="130" y="120" width="26" height="24" rx="2" fill="#D0E8D0" stroke="#D4A06A" stroke-width="0.5"/>
+<text class="ts" x="143" y="160" text-anchor="middle" fill="#999">3</text>
+<path d="M143 149 L143 188" stroke="#70B870" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.3"/>
+<text class="ts" x="143" y="203" text-anchor="middle" fill="#AAA">W/G</text>
+
+<rect x="164" y="120" width="26" height="24" rx="2" fill="#3080D0" stroke="#D4A06A" stroke-width="0.5"/>
+<text class="ts" x="177" y="160" text-anchor="middle" fill="#999">4</text>
+<path d="M177 149 L177 188" stroke="#3080D0" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.3"/>
+<text class="ts" x="177" y="203" text-anchor="middle" fill="#AAA">BL</text>
+
+<rect x="198" y="120" width="26" height="24" rx="2" fill="#C0D8F0" stroke="#2874A6" stroke-width="2"/>
+<text class="th" x="211" y="160" text-anchor="middle" fill="#2874A6">5</text>
+<path d="M211 149 L211 230" stroke="#2874A6" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+<rect x="232" y="120" width="26" height="24" rx="2" fill="#27AE60" stroke="#1E8449" stroke-width="2"/>
+<text class="th" x="245" y="160" text-anchor="middle" fill="#1E8449">6</text>
+<path d="M245 149 L245 230" stroke="#27AE60" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+<rect x="266" y="120" width="26" height="24" rx="2" fill="#E0D0C0" stroke="#8B6914" stroke-width="2"/>
+<text class="th" x="279" y="160" text-anchor="middle" fill="#7B5B3A">7</text>
+<path d="M279 149 L279 230" stroke="#A0522D" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+<rect x="300" y="120" width="26" height="24" rx="2" fill="#8D6E63" stroke="#D4A06A" stroke-width="0.5"/>
+<text class="ts" x="313" y="160" text-anchor="middle" fill="#999">8</text>
+<path d="M313 149 L313 188" stroke="#8D6E63" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.3"/>
+<text class="ts" x="313" y="203" text-anchor="middle" fill="#AAA">BR</text>
+
+<text class="ts" x="75" y="218" text-anchor="middle" fill="#CCC">x</text>
+<text class="ts" x="109" y="218" text-anchor="middle" fill="#CCC">x</text>
+<text class="ts" x="143" y="218" text-anchor="middle" fill="#CCC">x</text>
+<text class="ts" x="177" y="218" text-anchor="middle" fill="#CCC">x</text>
+<text class="ts" x="313" y="218" text-anchor="middle" fill="#CCC">x</text>
+
+<rect class="box-gray" x="50" y="220" width="148" height="22" rx="4"/>
+<text class="ts" x="124" y="234" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">Pins 1-4, 8: not used (cut)</text>
+
+<text class="th" x="211" y="255" text-anchor="middle" fill="#2874A6">White/Blue</text>
+<text class="th" x="245" y="275" text-anchor="middle" fill="#1E8449">Green</text>
+<text class="th" x="279" y="255" text-anchor="middle" fill="#7B5B3A">White/Brown</text>
+
+<path d="M211 265 L211 310 C211 340 300 350 400 350 L440 350" stroke="#2874A6" stroke-width="4" stroke-linecap="round" fill="none"/>
+<path d="M245 285 L245 380 C245 410 330 420 400 420 L440 420" stroke="#27AE60" stroke-width="4" stroke-linecap="round" fill="none"/>
+<path d="M279 265 L279 340 C279 370 340 385 400 385 L440 385" stroke="#A0522D" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+<rect class="box-blue" x="340" y="338" width="100" height="24" rx="12"/>
+<text class="th" x="390" y="354" text-anchor="middle" dominant-baseline="central" fill="#0C447C">TXD (data)</text>
+
+<rect class="box-coral" x="340" y="373" width="100" height="24" rx="12"/>
+<text class="th" x="390" y="389" text-anchor="middle" dominant-baseline="central" fill="#712B13">DCD (detect)</text>
+
+<rect x="328" y="408" width="114" height="24" rx="12" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+<text class="th" x="385" y="424" text-anchor="middle" dominant-baseline="central" fill="#27500A">DTR (handshake)</text>
+
+<text class="th" x="540" y="296" text-anchor="middle" fill="#2C2C2A">DB9 female connector</text>
+<text class="ts" x="540" y="314" text-anchor="middle" fill="#5F5E5A">Solder to this end</text>
+
+<path d="M470 330 L600 330 L620 370 L620 440 L600 480 L470 480 L450 440 L450 370 Z" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linejoin="round"/>
+
+<circle cx="483" cy="370" r="12" fill="#FAECE7" stroke="#993C1D" stroke-width="2"/>
+<text class="th" x="483" y="370" text-anchor="middle" dominant-baseline="central" fill="#712B13">1</text>
+
+<circle cx="513" cy="370" r="10" fill="none" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="ts" x="513" y="370" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">2</text>
+
+<circle cx="543" cy="370" r="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="2"/>
+<text class="th" x="543" y="370" text-anchor="middle" dominant-baseline="central" fill="#0C447C">3</text>
+
+<circle cx="573" cy="370" r="12" fill="#EAF3DE" stroke="#3B6D11" stroke-width="2"/>
+<text class="th" x="573" y="370" text-anchor="middle" dominant-baseline="central" fill="#27500A">4</text>
+
+<circle cx="600" cy="370" r="10" fill="none" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="ts" x="600" y="370" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">5</text>
+
+<circle cx="498" cy="440" r="10" fill="none" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="ts" x="498" y="440" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">6</text>
+<circle cx="533" cy="440" r="10" fill="none" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="ts" x="533" y="440" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">7</text>
+<circle cx="568" cy="440" r="10" fill="none" stroke="#B4B2A9" stroke-width="0.5"/>
+<text class="ts" x="568" y="440" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">8</text>
+
+<text class="ts" x="483" y="342" text-anchor="middle" fill="#993C1D" font-weight="600">DCD</text>
+<text class="ts" x="513" y="342" text-anchor="middle" fill="#888">RXD</text>
+<text class="ts" x="543" y="342" text-anchor="middle" fill="#185FA5" font-weight="600">TXD</text>
+<text class="ts" x="573" y="342" text-anchor="middle" fill="#3B6D11" font-weight="600">DTR</text>
+<text class="ts" x="600" y="342" text-anchor="middle" fill="#888">GND</text>
+<text class="ts" x="498" y="468" text-anchor="middle" fill="#888">DSR</text>
+<text class="ts" x="533" y="468" text-anchor="middle" fill="#888">RTS</text>
+<text class="ts" x="568" y="468" text-anchor="middle" fill="#888">CTS</text>
+
+<path d="M440 350 L543 350 L543 358" stroke="#2874A6" stroke-width="4" stroke-linecap="round" fill="none"/>
+<circle cx="543" cy="358" r="4" fill="#2874A6"/>
+
+<path d="M440 385 L465 385 L465 360 L483 360 L483 358" stroke="#A0522D" stroke-width="4" stroke-linecap="round" fill="none"/>
+<circle cx="483" cy="358" r="4" fill="#A0522D"/>
+
+<path d="M440 420 L455 420 L455 395 L573 395 L573 382" stroke="#27AE60" stroke-width="4" stroke-linecap="round" fill="none"/>
+<circle cx="573" cy="382" r="4" fill="#27AE60"/>
+
+<line x1="40" y1="505" x2="640" y2="505" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<text class="th" x="340" y="535" text-anchor="middle" fill="#2C2C2A">Summary: which wire goes where</text>
+
+<rect class="box-blue" x="40" y="553" width="190" height="52" rx="8"/>
+<text class="th" x="135" y="573" text-anchor="middle" dominant-baseline="central" fill="#0C447C">White/Blue wire</text>
+<text class="ts" x="135" y="593" text-anchor="middle" dominant-baseline="central" fill="#185FA5">RJ45 pin 5 to DB9 pin 3</text>
+
+<rect class="box-green" x="245" y="553" width="190" height="52" rx="8"/>
+<text class="th" x="340" y="573" text-anchor="middle" dominant-baseline="central" fill="#27500A">Green wire</text>
+<text class="ts" x="340" y="593" text-anchor="middle" dominant-baseline="central" fill="#3B6D11">RJ45 pin 6 to DB9 pin 4</text>
+
+<rect class="box-coral" x="450" y="553" width="190" height="52" rx="8"/>
+<text class="th" x="545" y="573" text-anchor="middle" dominant-baseline="central" fill="#712B13">White/Brown wire</text>
+<text class="ts" x="545" y="593" text-anchor="middle" dominant-baseline="central" fill="#993C1D">RJ45 pin 7 to DB9 pin 1</text>
+
+<line x1="40" y1="625" x2="640" y2="625" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<text class="th" x="340" y="655" text-anchor="middle" fill="#2C2C2A">How to build this cable</text>
+
+<rect class="box-gray" x="40" y="672" width="290" height="96" rx="10"/>
+<text class="th" x="56" y="696" dominant-baseline="central" fill="#444441">Step 1: Strip the cable</text>
+<text class="ts" x="56" y="718" fill="#5F5E5A">Cut a Cat5e or Cat6 network cable.</text>
+<text class="ts" x="56" y="734" fill="#5F5E5A">Strip outer jacket to expose 8 wires.</text>
+<text class="ts" x="56" y="750" fill="#5F5E5A">You only need 3 of the 8 wires.</text>
+
+<rect class="box-gray" x="350" y="672" width="290" height="96" rx="10"/>
+<text class="th" x="366" y="696" dominant-baseline="central" fill="#444441">Step 2: Crimp the RJ45 end</text>
+<text class="ts" x="366" y="718" fill="#5F5E5A">Crimp one end using standard T568B</text>
+<text class="ts" x="366" y="734" fill="#5F5E5A">order into an RJ45 plug. All 8 wires</text>
+<text class="ts" x="366" y="750" fill="#5F5E5A">go into the plug as normal.</text>
+
+<rect class="box-gray" x="40" y="780" width="290" height="96" rx="10"/>
+<text class="th" x="56" y="804" dominant-baseline="central" fill="#444441">Step 3: Solder the DB9 end</text>
+<text class="ts" x="56" y="826" fill="#5F5E5A">On the other end, solder only:</text>
+<text class="ts" x="56" y="842" fill="#5F5E5A">White/Blue to pin 3, Green to pin 4,</text>
+<text class="ts" x="56" y="858" fill="#5F5E5A">White/Brown to pin 1. Leave rest empty.</text>
+
+<rect class="box-gray" x="350" y="780" width="290" height="96" rx="10"/>
+<text class="th" x="366" y="804" dominant-baseline="central" fill="#444441">Step 4: Configure serial port</text>
+<text class="ts" x="366" y="826" fill="#5F5E5A">In Device Manager, set COM port to:</text>
+<text class="ts" x="366" y="842" fill="#5F5E5A">9600 baud, 8 data bits, no parity,</text>
+<text class="ts" x="366" y="858" fill="#5F5E5A">1 stop bit, no flow control.</text>
+
+<line x1="40" y1="896" x2="640" y2="896" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<rect class="box-teal" x="40" y="912" width="290" height="56" rx="8"/>
+<text class="th" x="185" y="932" text-anchor="middle" dominant-baseline="central" fill="#085041">USB adapter: Prolific PL2303</text>
+<text class="ts" x="185" y="952" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Must be Prolific chipset</text>
+
+<rect class="box-red" x="350" y="912" width="290" height="56" rx="8"/>
+<text class="th" x="495" y="932" text-anchor="middle" dominant-baseline="central" fill="#791F1F">FTDI will NOT work</text>
+<text class="ts" x="495" y="952" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">Tested and confirmed incompatible</text>
+
+<rect class="box-gray" x="40" y="984" width="600" height="56" rx="8"/>
+<text class="th" x="340" y="1004" text-anchor="middle" dominant-baseline="central" fill="#444441">Full chain: PC (USB) -- PL2303 adapter -- DB9 -- custom cable -- RJ45 -- L920 base -- A920 terminal</text>
+<text class="ts" x="340" y="1024" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">The L920 base connects to A920 via Bluetooth or WiFi (WiFi must have a password set)</text>
+
+</svg>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1360" height="1760" viewBox="0 0 680 880" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>PAX L920-BE Custom RS232 Cable Wiring Diagram</title>
+<desc>Only 3 wires needed: RJ45 pin 5 (White/Blue) to DB9 pin 3 (TXD), RJ45 pin 6 (Green) to DB9 pin 4 (DTR), RJ45 pin 7 (White/Brown) to DB9 pin 1 (DCD). Confirmed working with GHL UOB integration.</desc>
+<style>
+  text { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+  .th { font-size: 14px; font-weight: 600; fill: #2C2C2A; }
+  .ts { font-size: 12px; font-weight: 400; fill: #5F5E5A; }
+  .title-main { font-size: 14px; font-weight: 600; fill: #2C2C2A; }
+  .title-sub { font-size: 12px; font-weight: 400; fill: #5F5E5A; }
+
+  .box-teal { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5px; }
+  .box-teal .th { fill: #085041; }
+  .box-teal .ts { fill: #0F6E56; }
+
+  .box-purple { fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.5px; }
+  .box-purple .th { fill: #3C3489; }
+  .box-purple .ts { fill: #534AB7; }
+
+  .box-gray { fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.5px; }
+  .box-gray .th { fill: #444441; }
+  .box-gray .ts { fill: #5F5E5A; }
+
+  .box-blue { fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5px; }
+  .box-blue .th { fill: #0C447C; }
+  .box-blue .ts { fill: #185FA5; }
+
+  .box-green { fill: #EAF3DE; stroke: #3B6D11; stroke-width: 0.5px; }
+  .box-green .th { fill: #27500A; }
+  .box-green .ts { fill: #3B6D11; }
+
+  .box-coral { fill: #FAECE7; stroke: #993C1D; stroke-width: 0.5px; }
+  .box-coral .th { fill: #712B13; }
+  .box-coral .ts { fill: #993C1D; }
+
+  .box-red { fill: #FCEBEB; stroke: #A32D2D; stroke-width: 0.5px; }
+  .box-red .th { fill: #791F1F; }
+  .box-red .ts { fill: #A32D2D; }
+
+  .pin-active-blue { fill: #E6F1FB; stroke: #185FA5; stroke-width: 1.5px; }
+  .pin-active-green { fill: #EAF3DE; stroke: #3B6D11; stroke-width: 1.5px; }
+  .pin-active-coral { fill: #FAECE7; stroke: #993C1D; stroke-width: 1.5px; }
+  .pin-inactive { fill: none; stroke: #B4B2A9; stroke-width: 0.5px; }
+
+  .wire-blue { stroke: #2874A6; stroke-width: 3px; fill: none; stroke-linecap: round; }
+  .wire-green { stroke: #27AE60; stroke-width: 3px; fill: none; stroke-linecap: round; }
+  .wire-brown { stroke: #A0522D; stroke-width: 3px; fill: none; stroke-linecap: round; }
+
+  .dot-blue { fill: #2874A6; }
+  .dot-green { fill: #27AE60; }
+  .dot-brown { fill: #A0522D; }
+
+  .arr { stroke: #5F5E5A; stroke-width: 1.5px; }
+  .divider { stroke: #D3D1C7; stroke-width: 0.5px; }
+
+  .connector-outline { fill: none; stroke: #5F5E5A; stroke-width: 1.5px; }
+  .connector-clip { fill: none; stroke: #5F5E5A; stroke-width: 1px; }
+
+  .contact-inactive { fill: #E8E0D0; stroke: #AAA49A; stroke-width: 0.5px; }
+  .contact-white-blue { fill: #E8E0D0; stroke: #2874A6; stroke-width: 1.5px; }
+  .contact-green { fill: #27AE60; stroke: #1E8449; stroke-width: 1.5px; }
+  .contact-white-brown { fill: #E8E0D0; stroke: #795548; stroke-width: 1.5px; }
+  .contact-orange { fill: #E8A040; stroke: #AAA49A; stroke-width: 0.5px; }
+  .contact-blue { fill: #3080D0; stroke: #AAA49A; stroke-width: 0.5px; }
+  .contact-brown { fill: #8D6E63; stroke: #AAA49A; stroke-width: 0.5px; }
+</style>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ============ TITLE ============ -->
+<text class="title-main" x="340" y="24" text-anchor="middle">Custom RS232 cable for PAX L920-BE</text>
+<text class="title-sub" x="340" y="42" text-anchor="middle">Only 3 wires needed -- confirmed working with GHL / UOB integration</text>
+
+<!-- ============ HARDWARE CHAIN ============ -->
+<rect class="box-gray" x="40" y="62" width="84" height="36" rx="6"/>
+<text class="ts" x="82" y="84" text-anchor="middle" dominant-baseline="central" fill="#444441">PC (USB)</text>
+
+<line x1="124" y1="80" x2="142" y2="80" class="arr" marker-end="url(#arrow)"/>
+
+<rect class="box-teal" x="148" y="62" width="100" height="36" rx="6"/>
+<text class="ts" x="198" y="84" text-anchor="middle" dominant-baseline="central" fill="#085041">PL2303 adapter</text>
+
+<line x1="248" y1="80" x2="266" y2="80" class="arr" marker-end="url(#arrow)"/>
+
+<rect class="box-purple" x="272" y="62" width="62" height="36" rx="6"/>
+<text class="ts" x="303" y="84" text-anchor="middle" dominant-baseline="central" fill="#3C3489">DB9</text>
+
+<line x1="334" y1="80" x2="340" y2="80" stroke="#1D9E75" stroke-width="2.5" stroke-dasharray="4 3"/>
+<text class="ts" x="370" y="75" text-anchor="middle">custom</text>
+<text class="ts" x="370" y="89" text-anchor="middle">cable</text>
+<line x1="400" y1="80" x2="406" y2="80" stroke="#1D9E75" stroke-width="2.5" stroke-dasharray="4 3"/>
+
+<rect class="box-teal" x="412" y="62" width="62" height="36" rx="6"/>
+<text class="ts" x="443" y="84" text-anchor="middle" dominant-baseline="central" fill="#085041">RJ45</text>
+
+<line x1="474" y1="80" x2="492" y2="80" class="arr" marker-end="url(#arrow)"/>
+
+<rect class="box-gray" x="498" y="62" width="72" height="36" rx="6"/>
+<text class="ts" x="534" y="84" text-anchor="middle" dominant-baseline="central" fill="#444441">L920 base</text>
+
+<line x1="570" y1="80" x2="588" y2="80" class="arr" marker-end="url(#arrow)"/>
+
+<rect class="box-gray" x="594" y="62" width="56" height="36" rx="6"/>
+<text class="ts" x="622" y="84" text-anchor="middle" dominant-baseline="central" fill="#444441">A920</text>
+
+<!-- ============ DIVIDER ============ -->
+<line class="divider" x1="40" y1="118" x2="640" y2="118"/>
+
+<!-- ============ CONNECTOR LABELS ============ -->
+<text class="th" x="150" y="148" text-anchor="middle">RJ45 plug (front view)</text>
+<text class="ts" x="150" y="166" text-anchor="middle">Clip facing away from you</text>
+
+<text class="th" x="530" y="148" text-anchor="middle">DB9 female (front view)</text>
+<text class="ts" x="530" y="166" text-anchor="middle">Solder side facing you</text>
+
+<!-- ============ RJ45 CONNECTOR BODY ============ -->
+<rect class="connector-outline" x="90" y="188" width="120" height="160" rx="4"/>
+<rect class="connector-clip" x="120" y="178" width="60" height="14" rx="3"/>
+
+<!-- RJ45 CONTACTS (8 pins, T568B colors) -->
+<rect class="contact-inactive" x="98"  y="318" width="10" height="24" rx="1"/>
+<rect class="contact-orange"   x="112" y="318" width="10" height="24" rx="1"/>
+<rect class="contact-inactive" x="126" y="318" width="10" height="24" rx="1"/>
+<rect class="contact-blue"     x="140" y="318" width="10" height="24" rx="1"/>
+<rect class="contact-white-blue"  x="154" y="318" width="10" height="24" rx="1"/>
+<rect class="contact-green"       x="168" y="318" width="10" height="24" rx="1"/>
+<rect class="contact-white-brown" x="182" y="318" width="10" height="24" rx="1"/>
+<rect class="contact-inactive" x="196" y="318" width="10" height="24" rx="1"/>
+
+<!-- RJ45 PIN NUMBERS -->
+<text class="ts" x="103" y="358" text-anchor="middle">1</text>
+<text class="ts" x="117" y="358" text-anchor="middle">2</text>
+<text class="ts" x="131" y="358" text-anchor="middle">3</text>
+<text class="ts" x="145" y="358" text-anchor="middle">4</text>
+<text class="th" x="159" y="358" text-anchor="middle" fill="#0C447C">5</text>
+<text class="th" x="173" y="358" text-anchor="middle" fill="#27500A">6</text>
+<text class="th" x="187" y="358" text-anchor="middle" fill="#712B13">7</text>
+<text class="ts" x="201" y="358" text-anchor="middle">8</text>
+
+<!-- RJ45 COLOR LABELS (inactive) -->
+<text class="ts" x="103" y="210" text-anchor="middle">W/O</text>
+<text class="ts" x="117" y="210" text-anchor="middle">O</text>
+<text class="ts" x="131" y="210" text-anchor="middle">W/G</text>
+<text class="ts" x="145" y="210" text-anchor="middle">BL</text>
+
+<!-- RJ45 COLOR LABELS (active - highlighted) -->
+<rect class="box-blue" x="141" y="220" width="36" height="36" rx="6"/>
+<text class="th" x="159" y="242" text-anchor="middle" dominant-baseline="central" fill="#0C447C">W/BL</text>
+
+<rect class="box-green" x="155" y="260" width="36" height="36" rx="6"/>
+<text class="th" x="173" y="282" text-anchor="middle" dominant-baseline="central" fill="#27500A">GRN</text>
+
+<rect class="box-coral" x="169" y="220" width="36" height="36" rx="6"/>
+<text class="th" x="187" y="242" text-anchor="middle" dominant-baseline="central" fill="#712B13">W/BR</text>
+
+<text class="ts" x="201" y="290" text-anchor="middle">BR</text>
+
+<!-- ============ DB9 CONNECTOR BODY (D-shape) ============ -->
+<path class="connector-outline" d="M470 200 L570 200 L590 260 L590 340 L570 400 L470 400 L450 340 L450 260 Z" stroke-linejoin="round"/>
+
+<!-- DB9 TOP ROW: Pins 1-4 (pin 5 = GND not shown in top for space, using standard layout) -->
+<circle class="pin-active-coral" cx="480" cy="270" r="11"/>
+<text class="th" x="480" y="270" text-anchor="middle" dominant-baseline="central" fill="#712B13">1</text>
+
+<circle class="pin-inactive" cx="510" cy="270" r="9"/>
+<text class="ts" x="510" y="270" text-anchor="middle" dominant-baseline="central">2</text>
+
+<circle class="pin-active-blue" cx="540" cy="270" r="11"/>
+<text class="th" x="540" y="270" text-anchor="middle" dominant-baseline="central" fill="#0C447C">3</text>
+
+<circle class="pin-active-green" cx="570" cy="270" r="11"/>
+<text class="th" x="570" y="270" text-anchor="middle" dominant-baseline="central" fill="#27500A">4</text>
+
+<!-- DB9 BOTTOM ROW: Pins 5-7 -->
+<circle class="pin-inactive" cx="495" cy="340" r="9"/>
+<text class="ts" x="495" y="340" text-anchor="middle" dominant-baseline="central">5</text>
+
+<circle class="pin-inactive" cx="525" cy="340" r="9"/>
+<text class="ts" x="525" y="340" text-anchor="middle" dominant-baseline="central">6</text>
+
+<circle class="pin-inactive" cx="555" cy="340" r="9"/>
+<text class="ts" x="555" y="340" text-anchor="middle" dominant-baseline="central">7</text>
+
+<!-- DB9 PIN SIGNAL LABELS -->
+<text class="ts" x="480" y="243" text-anchor="middle" fill="#993C1D" font-weight="600">DCD</text>
+<text class="ts" x="510" y="243" text-anchor="middle">RXD</text>
+<text class="ts" x="540" y="243" text-anchor="middle" fill="#185FA5" font-weight="600">TXD</text>
+<text class="ts" x="570" y="243" text-anchor="middle" fill="#3B6D11" font-weight="600">DTR</text>
+<text class="ts" x="495" y="375" text-anchor="middle">GND</text>
+<text class="ts" x="525" y="375" text-anchor="middle">DSR</text>
+<text class="ts" x="555" y="375" text-anchor="middle">RTS</text>
+
+<!-- ============ WIRING PATHS ============ -->
+<!-- Wire 1: RJ45 Pin 5 (White/Blue) to DB9 Pin 3 (TXD) -->
+<path class="wire-blue" d="M159 342 L159 440 C159 460 300 430 340 440 C380 450 440 470 540 470 L540 282"/>
+<circle class="dot-blue" cx="159" cy="342" r="4"/>
+<circle class="dot-blue" cx="540" cy="282" r="4"/>
+
+<!-- Wire 2: RJ45 Pin 6 (Green) to DB9 Pin 4 (DTR) -->
+<path class="wire-green" d="M173 342 L173 470 C173 490 310 460 350 470 C390 480 440 500 570 500 L570 282"/>
+<circle class="dot-green" cx="173" cy="342" r="4"/>
+<circle class="dot-green" cx="570" cy="282" r="4"/>
+
+<!-- Wire 3: RJ45 Pin 7 (White/Brown) to DB9 Pin 1 (DCD) -->
+<path class="wire-brown" d="M187 342 L187 500 C187 520 290 490 340 500 C390 510 430 530 480 530 L480 282"/>
+<circle class="dot-brown" cx="187" cy="342" r="4"/>
+<circle class="dot-brown" cx="480" cy="282" r="4"/>
+
+<!-- ============ WIRE LEGEND ============ -->
+<rect class="box-blue" x="275" y="428" width="170" height="28" rx="6"/>
+<text class="th" x="360" y="446" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Pin 5 to Pin 3 (TXD)</text>
+
+<rect class="box-green" x="275" y="460" width="170" height="28" rx="6"/>
+<text class="th" x="360" y="478" text-anchor="middle" dominant-baseline="central" fill="#27500A">Pin 6 to Pin 4 (DTR)</text>
+
+<rect class="box-coral" x="275" y="492" width="170" height="28" rx="6"/>
+<text class="th" x="360" y="510" text-anchor="middle" dominant-baseline="central" fill="#712B13">Pin 7 to Pin 1 (DCD)</text>
+
+<!-- ============ DIVIDER ============ -->
+<line class="divider" x1="40" y1="545" x2="640" y2="545"/>
+
+<!-- ============ INSTRUCTIONS ============ -->
+<text class="th" x="340" y="575" text-anchor="middle">Step-by-step instructions</text>
+
+<rect class="box-teal" x="40" y="592" width="290" height="120" rx="10"/>
+<text class="th" x="56" y="616" dominant-baseline="central" fill="#085041">1. Cut a Cat5e/Cat6 cable</text>
+<text class="ts" x="56" y="638" fill="#0F6E56">Strip the outer jacket to expose</text>
+<text class="ts" x="56" y="654" fill="#0F6E56">the 8 colored wires inside.</text>
+<text class="ts" x="56" y="674" fill="#0F6E56">You only need 3 of them:</text>
+<text class="ts" x="56" y="694" fill="#0F6E56">White/Blue, Green, White/Brown</text>
+
+<rect class="box-purple" x="350" y="592" width="290" height="120" rx="10"/>
+<text class="th" x="366" y="616" dominant-baseline="central" fill="#3C3489">2. Solder to DB9 female</text>
+<text class="ts" x="366" y="638" fill="#534AB7">White/Blue wire to DB9 pin 3</text>
+<text class="ts" x="366" y="654" fill="#534AB7">Green wire to DB9 pin 4</text>
+<text class="ts" x="366" y="674" fill="#534AB7">White/Brown wire to DB9 pin 1</text>
+<text class="ts" x="366" y="694" fill="#534AB7">Leave all other pins empty</text>
+
+<rect class="box-teal" x="40" y="724" width="290" height="80" rx="10"/>
+<text class="th" x="56" y="748" dominant-baseline="central" fill="#085041">3. Crimp RJ45 (T568B)</text>
+<text class="ts" x="56" y="770" fill="#0F6E56">Crimp the other end as standard</text>
+<text class="ts" x="56" y="786" fill="#0F6E56">T568B into an RJ45 plug</text>
+
+<rect class="box-gray" x="350" y="724" width="290" height="80" rx="10"/>
+<text class="th" x="366" y="748" dominant-baseline="central" fill="#444441">4. Serial settings</text>
+<text class="ts" x="366" y="770" fill="#5F5E5A">9600 baud, 8N1, no flow control</text>
+<text class="ts" x="366" y="786" fill="#5F5E5A">Set in Device Manager &gt; COM port</text>
+
+<!-- ============ WARNING ============ -->
+<rect class="box-red" x="40" y="820" width="600" height="40" rx="8"/>
+<text class="th" x="340" y="844" text-anchor="middle" dominant-baseline="central" fill="#791F1F">FTDI chipsets do not work -- must use Prolific PL2303 / PL2303GT</text>
+
+</svg>
