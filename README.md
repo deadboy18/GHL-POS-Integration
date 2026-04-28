@@ -8,7 +8,10 @@ Built and tested in production with GHL Malaysia (UOB acquiring). The ECR protoc
 
 ## What is GHL?
 
-**GHL (Global Hardcore Leisure)** is one of the largest payment terminal providers in Southeast Asia. They supply and manage POS terminals for banks and merchants across Malaysia, Thailand, Philippines, Indonesia, and other ASEAN markets. If you're integrating a POS system with a card payment terminal in this region, you're very likely dealing with a GHL terminal.
+**GHL Systems** (now **NTT DATA Payment Services**) is one of the largest payment terminal providers in Southeast Asia, founded in 1994 in Kuala Lumpur, Malaysia. They supply and manage POS terminals for banks and merchants across Malaysia, Thailand, Philippines, Indonesia, and other ASEAN markets — with over 500,000 payment terminals deployed. In May 2024, NTT DATA Japan acquired GHL Systems, and the company was rebranded to NTT DATA Payment Services Sdn. Bhd. in November 2024.
+
+Despite the name change, the terminals, ECR protocol, and integration process remain the same. Most people in the industry still refer to them as "GHL" and the email domain is still @ghl.com. If you're integrating a POS system with a card payment terminal in Southeast Asia, you're very likely dealing with a GHL/NTT DATA terminal.
+
 
 This toolkit handles the **ECR (Electronic Cash Register) protocol** -- the serial communication standard that lets your POS software talk to the physical terminal to trigger card payments, voids, refunds, and settlements.
 
