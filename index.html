@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHL POS Terminal Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Noto+Sans+Tamil:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F8F9FB;--surface:#FFF;--surface2:#F1F3F5;--border:#E2E5EB;--border-h:#CBD0D8;--text:#1A1F2E;--text2:#5C6478;--text3:#8E95A5;--blue:#2563EB;--blue-soft:#EFF4FF;--blue-mid:#DBEAFE;--green:#059669;--green-soft:#ECFDF5;--green-dark:#047857;--green-border:#A7F3D0;--orange:#D97706;--red:#DC2626;--red-soft:#FEF2F2;--red-border:#FECACA;--pink:#DB2777;--cyan:#0891B2;--accent-bar:#2563EB;--log-bg:#FFF;--log-tx:#2563EB;--log-rx:#059669;--toast-shadow:0 6px 24px rgba(0,0,0,.15);--receipt-bg:#FFFDF5;--receipt-text:#1a1a1a;--receipt-label:#888;--sans:'DM Sans',system-ui,sans-serif;--mono:'DM Mono','Consolas','Courier New',monospace;--radius:10px;--shadow-sm:0 1px 2px rgba(0,0,0,.04),0 1px 4px rgba(0,0,0,.03)}
+[data-theme="dark"]{--bg:#0F1117;--surface:#1A1D27;--surface2:#242836;--border:#2E3346;--border-h:#3D4460;--text:#E4E4E7;--text2:#9CA3AF;--text3:#6B7280;--blue:#3B82F6;--blue-soft:#1E293B;--blue-mid:#1E3A5F;--green:#10B981;--green-soft:#0D2818;--green-dark:#34D399;--green-border:#065F46;--orange:#F59E0B;--red:#EF4444;--red-soft:#2D1515;--red-border:#7F1D1D;--pink:#EC4899;--cyan:#06B6D4;--accent-bar:#3B82F6;--log-bg:#1A1D27;--log-tx:#60A5FA;--log-rx:#34D399;--toast-shadow:0 6px 24px rgba(0,0,0,.5);--receipt-bg:#1A1D27;--receipt-text:#E4E4E7;--receipt-label:#6B7280;--shadow-sm:0 1px 3px rgba(0,0,0,.3)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .2s,color .2s;overflow-x:hidden}
+[lang="ta"]{font-family:'Noto Sans Tamil',var(--sans)}
+.topbar{background:var(--accent-bar);height:4px}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;transition:background .2s}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:34px;height:34px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-icon svg{width:18px;height:18px}
+.brand h1{font-size:16px;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
+.brand h1 span{font-weight:400;color:var(--text3);font-size:13px;margin-left:4px}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.theme-btn,.demo-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.theme-btn:hover,.demo-btn:hover{border-color:var(--border-h)}
+.theme-btn svg,.demo-btn svg{width:18px;height:18px;stroke:var(--text2);fill:none;stroke-width:2}
+.demo-btn.active{background:var(--orange);border-color:var(--orange)}
+.demo-btn.active svg{stroke:#fff}
+.demo-badge{position:fixed;top:52px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-family:var(--sans);font-size:11px;font-weight:700;padding:3px 16px;border-radius:0 0 8px 8px;z-index:50;display:none;letter-spacing:.08em}
+.lang-select{font-family:var(--sans);font-size:12px;font-weight:600;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238E95A5' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:24px}
+.status-pill{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.status-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--border-h);transition:all .3s}
+.status-pill.on{background:var(--green-soft);color:var(--green-dark);border-color:var(--green-border)}
+.status-pill.on .dot{background:var(--green);box-shadow:0 0 0 3px rgba(5,150,105,.15)}
+.btn{font-family:var(--sans);font-size:13px;font-weight:600;padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
+.btn:hover{background:var(--surface2)}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-primary.active{background:var(--red);border-color:var(--red)}
+.btn-reset{font-family:var(--sans);font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;border:1px solid var(--red-border);background:var(--red-soft);color:var(--red);cursor:pointer}
+.btn-reset:hover{background:#FEE2E2}
+.main{display:grid;grid-template-columns:350px 1fr;max-width:1400px;margin:0 auto;min-height:calc(100vh - 58px)}
+@media(max-width:860px){.main{grid-template-columns:1fr}.panel{border-right:none!important;border-bottom:1px solid var(--border)}}
+.panel{padding:20px;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;gap:16px;overflow-y:auto;transition:background .2s}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);transition:background .2s,border .2s}
+.card-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:12px}
+.input-group{margin-bottom:12px}
+.input-group label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:4px}
+.input-group input{width:100%;font-family:var(--mono);font-size:20px;font-weight:500;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);text-align:right;transition:border .15s}
+.input-group input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.input-sm input{font-size:14px;padding:8px 10px}
+.quick-amounts{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.quick-amounts button{font-family:var(--mono);font-size:11px;font-weight:500;padding:4px 8px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text2);cursor:pointer}
+.quick-amounts button:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
+.tx-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-tx{font-family:var(--sans);font-size:14px;font-weight:600;padding:13px;border:none;border-radius:8px;color:#fff;cursor:pointer;transition:all .15s}
+.btn-tx:hover{filter:brightness(1.08);transform:translateY(-1px)}.btn-tx:active{transform:scale(.98)}.btn-tx:disabled{opacity:.3;cursor:not-allowed;filter:none;transform:none}
+.btn-sale{background:var(--green)}.btn-void{background:var(--orange)}.btn-settle{background:var(--blue)}.btn-refund{background:var(--pink)}
+.btn-stop{width:100%;font-family:var(--sans);font-size:12px;font-weight:600;padding:9px;background:var(--red-soft);border:1px solid var(--red-border);border-radius:7px;color:var(--red);cursor:pointer;margin-top:8px}
+.btn-stop:disabled{opacity:.3;cursor:not-allowed}
+.checkbox-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);margin-top:4px}
+.checkbox-row input{accent-color:var(--blue);width:15px;height:15px}
+.ref-table{font-size:11px;color:var(--text2);line-height:1.9}
+.ref-table .code{font-family:var(--mono);font-weight:500;color:var(--text);background:var(--bg);padding:1px 4px;border-radius:3px;font-size:10px}
+.ref-table .section-label{font-weight:600;color:var(--text);margin-bottom:2px;margin-top:8px}
+.warning-card{background:var(--red-soft);border:1px solid var(--red-border);border-radius:var(--radius);padding:14px 16px}
+.warning-card .card-title{color:var(--red)}
+.warning-card p{font-size:12px;color:var(--red);line-height:1.6;opacity:.85}
+.warning-card b{opacity:1}
+.info-box{background:var(--blue-soft);border:1px solid var(--blue-mid);border-radius:8px;padding:12px 14px;font-size:12px;color:var(--blue);line-height:1.5}
+.info-box b{font-weight:600}
+.log-section{padding:20px;display:flex;flex-direction:column;background:var(--bg);transition:background .2s}
+.log-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.log-header h2{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3)}
+.log-tools{display:flex;gap:5px}
+.log-tools button{font-family:var(--sans);font-size:11px;font-weight:500;padding:4px 10px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text2);cursor:pointer}
+.log-tools button:hover{border-color:var(--border-h)}
+.log-box{flex:1;font-family:var(--mono);font-size:12px;line-height:1.75;background:var(--log-bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;overflow-y:auto;min-height:400px;max-height:calc(100vh - 140px);box-shadow:var(--shadow-sm);transition:background .2s}
+.log-box .tx{color:var(--log-tx)}.log-box .rx{color:var(--log-rx)}.log-box .err{color:var(--red)}.log-box .info{color:var(--text3)}.log-box .ok{color:var(--green);font-weight:600}.log-box .egg{color:var(--orange);font-weight:600}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);padding:12px 28px;border-radius:10px;color:#fff;font-family:var(--sans);font-size:14px;font-weight:600;z-index:200;opacity:0;transition:all .3s ease;pointer-events:none;box-shadow:var(--toast-shadow);white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.receipt-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:100}
+.receipt-card{background:var(--receipt-bg);color:var(--receipt-text);font-family:var(--mono);font-size:12px;padding:28px 24px;border-radius:14px;width:420px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);border:1px solid var(--border)}
+.receipt-card h3{text-align:center;font-size:15px;font-weight:700;margin-bottom:16px;font-family:var(--mono)}
+.receipt-card pre{font-family:var(--mono);font-size:12px;line-height:1.6;white-space:pre;margin:0;color:var(--receipt-text)}
+.receipt-card .actions{display:flex;gap:6px;margin-top:20px;justify-content:center;flex-wrap:wrap}
+.receipt-card .actions button{font-family:var(--sans);font-size:12px;font-weight:600;padding:8px 16px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer}
+.receipt-card .actions button:hover{background:var(--surface2)}
+.browser-warning{background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:14px 18px;margin:16px 24px;color:#92400E;font-size:13px;line-height:1.6;display:none}
+.browser-warning b{color:#78350F}
+.footer{text-align:center;padding:14px;font-size:11px;color:var(--text3);border-top:1px solid var(--border);background:var(--surface);transition:background .2s}
+.footer a{color:var(--blue);text-decoration:none}
+.bill{position:fixed;font-size:28px;z-index:300;pointer-events:none;user-select:none;animation:fall linear forwards}
+@keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+@media print{body *{display:none!important}}
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div id="demoBadge" class="demo-badge">DEMO MODE</div>
+<div id="browserWarning" class="browser-warning"></div>
+<div class="header">
+<div class="brand"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M6 4v16M18 4v16M6 12h12"/></svg></div><h1>GHL POS Simulator <span>Web Serial</span></h1></div>
+<div class="header-right">
+<select class="lang-select" id="langSelect" onchange="setLang(this.value)"><option value="en">EN</option><option value="bm">BM</option><option value="zh">ZH</option><option value="ta">TA</option><option value="id">ID</option></select>
+<button class="demo-btn" id="demoBtn" onclick="toggleDemo()" title="Demo mode"><svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><circle cx="12" cy="12" r="10"/></svg></button>
+<button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+<div class="status-pill" id="statusPill"><div class="dot"></div><span id="portLabel"></span></div>
+<button class="btn btn-primary" id="btnConnect" onclick="toggleConnection()"></button>
+<button class="btn-reset" id="btnReset" onclick="forceReset()" style="display:none">Reset port</button>
+</div></div>
+<div class="main">
+<div class="panel">
+<div class="info-box" id="permissionNote"></div>
+<div class="card">
+<div class="card-title" id="txTitle"></div>
+<div class="input-group"><label id="lblAmt"></label><input type="text" id="inputAmt" value="0.01" readonly></div>
+<div class="quick-amounts"><button onclick="setAmt(1)">0.01</button><button onclick="setAmt(100)">1.00</button><button onclick="setAmt(500)">5.00</button><button onclick="setAmt(1000)">10.00</button><button onclick="setAmt(5000)">50.00</button><button onclick="setAmt(10000)">100</button></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+<div class="input-group input-sm" style="margin:0"><label id="lblInv"></label><input type="text" id="inputInv" value="000001"></div>
+<div class="input-group input-sm" style="margin:0"><label id="lblCshr"></label><input type="text" id="inputCshr" value="99"></div>
+</div>
+<div class="checkbox-row"><input type="checkbox" id="chkAutoInc" checked><label for="chkAutoInc" id="lblAutoInc"></label></div>
+</div>
+<div class="card">
+<div class="card-title" id="actTitle"></div>
+<div class="tx-grid">
+<button class="btn-tx btn-sale" id="btnSale" disabled onclick="doTx('020')"></button>
+<button class="btn-tx btn-void" id="btnVoid" disabled onclick="doTx('022')"></button>
+<button class="btn-tx btn-settle" id="btnSettle" disabled onclick="doTx('050')"></button>
+<button class="btn-tx btn-refund" id="btnRefund" disabled onclick="doTx('026')"></button>
+</div>
+<button class="btn-stop" id="btnStop" disabled onclick="cancelWait()"></button>
+</div>
+<div class="card">
+<div class="card-title" id="refTitle"></div>
+<div class="ref-table">
+<div class="section-label" id="refCards"></div>
+<span class="code">04</span> Visa <span class="code">05</span> Mastercard <span class="code">06</span> Diners<br>
+<span class="code">07</span> Amex <span class="code">08</span> MyDebit <span class="code">09</span> JCB<br>
+<span class="code">10</span> UnionPay <span class="code">11</span> E-Wallet
+<div class="section-label" id="refCodes"></div>
+<span class="code">00</span> <span id="rc00"></span> <span class="code">CT</span> <span id="rcCT"></span><br>
+<span class="code">51</span> <span id="rc51"></span> <span class="code">55</span> <span id="rc55"></span><br>
+<span class="code">54</span> <span id="rc54"></span> <span class="code">91</span> <span id="rc91"></span>
+</div></div>
+<div class="warning-card"><div class="card-title" id="pedTitle"></div><p id="pedText"></p></div>
+</div>
+<div class="log-section">
+<div class="log-header"><h2 id="logTitle"></h2><div class="log-tools"><button onclick="copyLog()" id="btnCopy"></button><button onclick="saveLog()" id="btnSave"></button><button onclick="clearLog()" id="btnClear"></button></div></div>
+<div class="log-box" id="logBox"></div>
+</div></div>
+<div class="footer" id="footerText"></div>
+<div id="toastEl" class="toast"></div>
+<div class="receipt-overlay" id="receiptOverlay" style="display:none" onclick="if(event.target===this)closeReceipt()"></div>
+<iframe id="printFrame" style="display:none"></iframe>
+
+<script>
+var L={
+en:{notConnected:'Not connected',connect:'Connect port',disconnect:'Disconnect',permNote:'<b>Permission required:</b> Clicking "Connect port" opens a browser dialog to select your serial device. Choose the port labeled <b>Prolific</b> or <b>PL2303</b>. Required each session by browser security policy.',txTitle:'TRANSACTION DETAILS',lblAmt:'Amount (ATM-style input)',lblInv:'Invoice number',lblCshr:'Cashier ID',autoInc:'Auto-increment invoice on approval',actTitle:'ACTIONS',sale:'Sale',void:'Void',settlement:'Settlement',refund:'Refund',stopWait:'Stop waiting for terminal',refTitle:'REFERENCE',refCards:'Card type codes',refCodes:'Response codes',rc00:'Approved',rcCT:'Cancel/Timeout',rc51:'Insufficient funds',rc55:'Wrong PIN',rc54:'Expired card',rc91:'Issuer down',pedTitle:'PED TAMPERED WARNING',pedText:'If the A920 shows <b>"PED TAMPERED"</b>, the tamper sensor has triggered. Caused by <b>unscrewing the casing</b> (booby-trapped screws) or <b>dropping the terminal</b>. This is <b>permanent</b> -- unit must be replaced by GHL.',logTitle:'COMMUNICATION LOG',copy:'Copy',save:'Save',clear:'Clear',footer:'GHL POS Terminal Simulator -- Web Serial Edition -- Protocol: POS Integration v1017 -- Requires Prolific PL2303',browserWarn:'<b>Unsupported browser.</b> Web Serial API requires <b>Google Chrome</b>, <b>Microsoft Edge</b>, or <b>Opera</b> (89+).',waiting:'Waiting for terminal response (interact with terminal)...',approved:'STATUS: APPROVED',declined:'STATUS: DECLINED (Code: {0})',cancelled:'Cancelled / Timeout',disconnected:'Disconnected',connectedTo:'Connected to {0}',connFail:'Connection failed: {0}',writeErr:'Write error: {0}',txLabel:'Action: {0} | Amount: {1} | Invoice: {2}',logCopied:'Log copied to clipboard',toastSwipe:'Please SWIPE/INSERT CARD on Terminal',toastVoid:'Void Transaction',toastRefund:'Refund Mode Active',toastSettle:'Settlement In Progress...',toastApproved:'TRANSACTION APPROVED',toastDeclined:'DECLINED: {0}',copyReceipt:'Copy',printReceipt:'Print / PDF',close:'Close',portReset:'Port forcefully reset',portResetFail:'Reset failed: {0}',SALE:'SALE',VOID:'VOID',SETTLEMENT:'SETTLEMENT',REFUND:'REFUND'},
+bm:{notConnected:'Tidak disambung',connect:'Sambung port',disconnect:'Putuskan',permNote:'<b>Kebenaran diperlukan:</b> Klik "Sambung port" akan buka dialog pelayar. Pilih port berlabel <b>Prolific</b> atau <b>PL2303</b>.',txTitle:'BUTIRAN TRANSAKSI',lblAmt:'Jumlah (input gaya ATM)',lblInv:'No. invois',lblCshr:'ID juruwang',autoInc:'Auto-tambah invois selepas kelulusan',actTitle:'TINDAKAN',sale:'Jualan',void:'Batal',settlement:'Penyelesaian',refund:'Bayaran Balik',stopWait:'Berhenti menunggu terminal',refTitle:'RUJUKAN',refCards:'Kod jenis kad',refCodes:'Kod respons',rc00:'Diluluskan',rcCT:'Batal/Tamat masa',rc51:'Dana tidak mencukupi',rc55:'PIN salah',rc54:'Kad tamat tempoh',rc91:'Pengeluar tidak tersedia',pedTitle:'AMARAN PED TAMPERED',pedText:'Jika A920 memaparkan <b>"PED TAMPERED"</b>, sensor tamper telah tercetus. Disebabkan <b>membuka skru casing</b> (skru perangkap) atau <b>menjatuhkan terminal</b>. <b>Kekal</b> -- unit perlu diganti oleh GHL.',logTitle:'LOG KOMUNIKASI',copy:'Salin',save:'Simpan',clear:'Padam',footer:'Simulator Terminal POS GHL -- Edisi Web Serial -- Protokol: POS Integration v1017',browserWarn:'<b>Pelayar tidak disokong.</b> Web Serial API memerlukan <b>Chrome</b>, <b>Edge</b>, atau <b>Opera</b> (89+).',waiting:'Menunggu respons terminal...',approved:'STATUS: DILULUSKAN',declined:'STATUS: DITOLAK (Kod: {0})',cancelled:'Dibatalkan / Tamat masa',disconnected:'Diputuskan',connectedTo:'Disambung ke {0}',connFail:'Sambungan gagal: {0}',writeErr:'Ralat: {0}',txLabel:'Tindakan: {0} | Jumlah: {1} | Invois: {2}',logCopied:'Log disalin',toastSwipe:'Sila LERET/MASUKKAN KAD pada Terminal',toastVoid:'Transaksi Batal',toastRefund:'Mod Bayaran Balik Aktif',toastSettle:'Penyelesaian Dalam Proses...',toastApproved:'TRANSAKSI DILULUSKAN',toastDeclined:'DITOLAK: {0}',copyReceipt:'Salin',printReceipt:'Cetak / PDF',close:'Tutup',portReset:'Port dipaksa reset',portResetFail:'Reset gagal: {0}',SALE:'JUALAN',VOID:'BATAL',SETTLEMENT:'PENYELESAIAN',REFUND:'BAYARAN BALIK'},
+zh:{notConnected:'未连接',connect:'连接端口',disconnect:'断开',permNote:'<b>需要权限：</b>点击"连接端口"后浏览器会弹出选择串口的对话框。选择 <b>Prolific</b> 或 <b>PL2303</b> 端口。',txTitle:'交易详情',lblAmt:'金额（ATM式输入）',lblInv:'发票号码',lblCshr:'收银员ID',autoInc:'批准后自动递增发票号',actTitle:'操作',sale:'消费',void:'撤销',settlement:'结算',refund:'退款',stopWait:'停止等待',refTitle:'参考',refCards:'卡类型代码',refCodes:'响应代码',rc00:'已批准',rcCT:'取消/超时',rc51:'余额不足',rc55:'PIN错误',rc54:'卡已过期',rc91:'发卡行不可用',pedTitle:'PED篡改警告',pedText:'A920显示<b>"PED TAMPERED"</b>表示防篡改传感器触发。<b>拆卸外壳螺丝</b>或<b>终端跌落</b>导致。<b>不可修复</b>，必须由GHL更换。',logTitle:'通信日志',copy:'复制',save:'保存',clear:'清除',footer:'GHL POS终端模拟器 -- Web Serial版',browserWarn:'<b>不支持。</b>需要 <b>Chrome</b>、<b>Edge</b> 或 <b>Opera</b>（89+）。',waiting:'等待终端响应...',approved:'状态：已批准',declined:'状态：已拒绝（{0}）',cancelled:'已取消/超时',disconnected:'已断开',connectedTo:'已连接 {0}',connFail:'连接失败：{0}',writeErr:'错误：{0}',txLabel:'操作：{0} | 金额：{1} | 发票：{2}',logCopied:'已复制',toastSwipe:'请在终端上刷卡/插卡',toastVoid:'撤销交易',toastRefund:'退款模式',toastSettle:'结算中...',toastApproved:'交易已批准',toastDeclined:'已拒绝：{0}',copyReceipt:'复制',printReceipt:'打印/PDF',close:'关闭',portReset:'端口已强制重置',portResetFail:'重置失败：{0}',SALE:'消费',VOID:'撤销',SETTLEMENT:'结算',REFUND:'退款'},
+ta:{notConnected:'இணைக்கப்படவில்லை',connect:'போர்ட் இணை',disconnect:'துண்டி',permNote:'<b>அனுமதி தேவை:</b> "போர்ட் இணை" கிளிக் செய்யவும். <b>Prolific</b> அல்லது <b>PL2303</b> போர்ட்டை தேர்ந்தெடுக்கவும்.',txTitle:'பரிவர்த்தனை விவரங்கள்',lblAmt:'தொகை (ATM உள்ளீடு)',lblInv:'விலைப்பட்டி எண்',lblCshr:'காசாளர் ID',autoInc:'அங்கீகரிப்பில் தானாக அதிகரிக்கும்',actTitle:'செயல்கள்',sale:'விற்பனை',void:'ரத்து',settlement:'தீர்வு',refund:'பணத்திருப்பி',stopWait:'காத்திருப்பை நிறுத்து',refTitle:'குறிப்பு',refCards:'கார்டு வகை குறியீடுகள்',refCodes:'பதில் குறியீடுகள்',rc00:'அங்கீகரிக்கப்பட்டது',rcCT:'ரத்து/நேரம் முடிந்தது',rc51:'போதிய நிதி இல்லை',rc55:'தவறான PIN',rc54:'காலாவதி கார்டு',rc91:'வழங்குநர் கிடைக்கவில்லை',pedTitle:'PED TAMPERED எச்சரிக்கை',pedText:'A920 <b>"PED TAMPERED"</b> காட்டினால் சேதம் உணரி செயல்பட்டுள்ளது. <b>நிரந்தரம்</b> -- GHL மாற்ற வேண்டும்.',logTitle:'தொடர்பு பதிவு',copy:'நகல்',save:'சேமி',clear:'அழி',footer:'GHL POS சிமுலேட்டர் -- Web Serial',browserWarn:'<b>ஆதரிக்கப்படாத உலாவி.</b> <b>Chrome</b>, <b>Edge</b> அல்லது <b>Opera</b> (89+) தேவை.',waiting:'டெர்மினல் பதிலுக்காக காத்திருக்கிறது...',approved:'நிலை: அங்கீகரிக்கப்பட்டது',declined:'நிலை: நிராகரிக்கப்பட்டது ({0})',cancelled:'ரத்து / நேரம் முடிந்தது',disconnected:'துண்டிக்கப்பட்டது',connectedTo:'{0} இணைக்கப்பட்டது',connFail:'தோல்வி: {0}',writeErr:'பிழை: {0}',txLabel:'செயல்: {0} | தொகை: {1} | விலைப்பட்டி: {2}',logCopied:'நகலெடுக்கப்பட்டது',toastSwipe:'டெர்மினலில் கார்டு ஸ்வைப் செய்யவும்',toastVoid:'ரத்து பரிவர்த்தனை',toastRefund:'பணத்திருப்பி செயலில்',toastSettle:'தீர்வு நடைபெறுகிறது...',toastApproved:'பரிவர்த்தனை அங்கீகரிக்கப்பட்டது',toastDeclined:'நிராகரிக்கப்பட்டது: {0}',copyReceipt:'நகல்',printReceipt:'அச்சிடு / PDF',close:'மூடு',portReset:'போர்ட் மீட்டமைக்கப்பட்டது',portResetFail:'மீட்டமைப்பு தோல்வி: {0}',SALE:'விற்பனை',VOID:'ரத்து',SETTLEMENT:'தீர்வு',REFUND:'பணத்திருப்பி'},
+id:{notConnected:'Tidak terhubung',connect:'Hubungkan port',disconnect:'Putuskan',permNote:'<b>Izin diperlukan:</b> Klik "Hubungkan port" membuka dialog browser. Pilih port berlabel <b>Prolific</b> atau <b>PL2303</b>.',txTitle:'DETAIL TRANSAKSI',lblAmt:'Jumlah (input gaya ATM)',lblInv:'No. faktur',lblCshr:'ID kasir',autoInc:'Auto-increment setelah disetujui',actTitle:'AKSI',sale:'Penjualan',void:'Void',settlement:'Settlement',refund:'Refund',stopWait:'Berhenti menunggu',refTitle:'REFERENSI',refCards:'Kode jenis kartu',refCodes:'Kode respons',rc00:'Disetujui',rcCT:'Batal/Timeout',rc51:'Saldo tidak cukup',rc55:'PIN salah',rc54:'Kartu kedaluwarsa',rc91:'Penerbit tidak tersedia',pedTitle:'PERINGATAN PED TAMPERED',pedText:'Jika A920 menampilkan <b>"PED TAMPERED"</b>, sensor tamper terpicu. <b>Permanen</b> -- harus diganti oleh GHL.',logTitle:'LOG KOMUNIKASI',copy:'Salin',save:'Simpan',clear:'Hapus',footer:'Simulator POS GHL -- Web Serial',browserWarn:'<b>Tidak didukung.</b> Perlu <b>Chrome</b>, <b>Edge</b> atau <b>Opera</b> (89+).',waiting:'Menunggu respons terminal...',approved:'STATUS: DISETUJUI',declined:'STATUS: DITOLAK ({0})',cancelled:'Dibatalkan / Timeout',disconnected:'Terputus',connectedTo:'Terhubung ke {0}',connFail:'Gagal: {0}',writeErr:'Error: {0}',txLabel:'Aksi: {0} | Jumlah: {1} | Faktur: {2}',logCopied:'Disalin',toastSwipe:'Silakan GESEK/MASUKKAN KARTU',toastVoid:'Transaksi Void',toastRefund:'Mode Refund Aktif',toastSettle:'Settlement Dalam Proses...',toastApproved:'TRANSAKSI DISETUJUI',toastDeclined:'DITOLAK: {0}',copyReceipt:'Salin',printReceipt:'Cetak / PDF',close:'Tutup',portReset:'Port direset paksa',portResetFail:'Reset gagal: {0}',SALE:'PENJUALAN',VOID:'VOID',SETTLEMENT:'SETTLEMENT',REFUND:'REFUND'}
+};
+var lang='en',dark=false,STX=0x02,ETX=0x03,port=null,reader=null,writer=null,connected=false,cancelFlag=false,rawAmt=1,toastTimer=null,demoMode=false,txBusy=false;
+var CARD_TYPES={'04':'VISA','05':'MASTERCARD','06':'DINERS','07':'AMEX','08':'MYDEBIT','09':'JCB','10':'UNIONPAY','11':'E-WALLET'};
+var CMD_NAMES={'020':'SALE','022':'VOID','050':'SETTLEMENT','026':'REFUND'};
+var MONTHS=['','January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function t(k){var s=L[lang][k]||L.en[k]||k;for(var i=1;i<arguments.length;i++)s=s.replace('{'+String(i-1)+'}',arguments[i]);return s}
+function setLang(l){lang=l;document.documentElement.lang=l;applyLang();try{localStorage.setItem('ghl-lang',l)}catch(e){}}
+function toggleTheme(){dark=!dark;document.documentElement.setAttribute('data-theme',dark?'dark':'');document.getElementById('themeIcon').innerHTML=dark?'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>':'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';try{localStorage.setItem('ghl-theme',dark?'dark':'light')}catch(e){}}
+function toggleDemo(){demoMode=!demoMode;document.getElementById('demoBtn').classList.toggle('active',demoMode);document.getElementById('demoBadge').style.display=demoMode?'block':'none';if(demoMode){setConnected(true,'DEMO');log('Demo mode enabled -- no serial port needed','egg');toast('DEMO MODE','#D97706')}else{setConnected(false,t('notConnected'));log('Demo mode disabled')}}
+function applyLang(){var ids={portLabel:connected?null:'notConnected',btnConnect:connected?'disconnect':'connect',permissionNote:'permNote',txTitle:'txTitle',lblAmt:'lblAmt',lblInv:'lblInv',lblCshr:'lblCshr',lblAutoInc:'autoInc',actTitle:'actTitle',btnSale:'sale',btnVoid:'void',btnSettle:'settlement',btnRefund:'refund',btnStop:'stopWait',refTitle:'refTitle',refCards:'refCards',refCodes:'refCodes',rc00:'rc00',rcCT:'rcCT',rc51:'rc51',rc55:'rc55',rc54:'rc54',rc91:'rc91',pedTitle:'pedTitle',logTitle:'logTitle',btnCopy:'copy',btnSave:'save',btnClear:'clear'};for(var id in ids){var el=document.getElementById(id);if(el&&ids[id]){if(id==='permissionNote')el.innerHTML=t(ids[id]);else el.textContent=t(ids[id])}}document.getElementById('pedText').innerHTML=t('pedText');document.getElementById('footerText').innerHTML=t('footer')+' &mdash; <a href="https://github.com/deadboy18" target="_blank">github.com/deadboy18</a>';document.getElementById('browserWarning').innerHTML=t('browserWarn')}
+
+function updateAmtDisplay(){document.getElementById('inputAmt').value=(rawAmt/100).toFixed(2)}
+function setAmt(v){rawAmt=v;updateAmtDisplay();lastEggAmt=0}
+var lastEggAmt=0;
+function checkBigBaller(){var amt=rawAmt/100;if(amt>=10000&&lastEggAmt<10000){lastEggAmt=amt;log('WHALE ALERT: RM '+amt.toFixed(2)+' ?! Someone call the bank manager!','egg');toast('WE GOT A BIG BALLER!!!','#D97706',3000)}else if(amt>=1000&&amt<10000&&lastEggAmt<1000){lastEggAmt=amt;log('Big spender detected: RM '+amt.toFixed(2),'egg')}}
+function makeItRain(){var bills=['💵','💴','💶','💷','💰','🤑'];for(var i=0;i<60;i++){var b=document.createElement('div');b.className='bill';b.textContent=bills[Math.floor(Math.random()*bills.length)];b.style.left=Math.random()*100+'vw';b.style.top=-30-Math.random()*100+'px';b.style.animationDuration=2+Math.random()*3+'s';b.style.animationDelay=Math.random()*2+'s';b.style.fontSize=20+Math.random()*30+'px';document.body.appendChild(b);setTimeout(function(el){el.remove()}.bind(null,b),6000)}}
+document.addEventListener('DOMContentLoaded',function(){
+  var el=document.getElementById('inputAmt');
+  el.addEventListener('keydown',function(e){if(e.key>='0'&&e.key<='9'){e.preventDefault();if(String(rawAmt).length<10){rawAmt=rawAmt*10+parseInt(e.key);updateAmtDisplay();checkBigBaller()}}else if(e.key==='Backspace'){e.preventDefault();rawAmt=Math.floor(rawAmt/10);updateAmtDisplay();lastEggAmt=0}else{e.preventDefault()}});
+  el.addEventListener('click',function(){this.setSelectionRange(this.value.length,this.value.length)});
+});
+
+function toast(msg,bg,dur){bg=bg||'#333';dur=dur||3000;var el=document.getElementById('toastEl');el.textContent=msg;el.style.background=bg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},dur)}
+function log(msg,cls){cls=cls||'info';var box=document.getElementById('logBox');var ts=new Date().toLocaleTimeString('en-GB');var line=document.createElement('div');line.className=cls;line.textContent='['+ts+'] '+msg;box.appendChild(line);box.scrollTop=box.scrollHeight}
+function clearLog(){document.getElementById('logBox').innerHTML=''}
+function copyLog(){navigator.clipboard.writeText(document.getElementById('logBox').innerText);toast(t('logCopied'),'#333',1500)}
+function saveLog(){var b=new Blob([document.getElementById('logBox').innerText],{type:'text/plain'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ghl_log_'+new Date().toISOString().slice(0,10)+'.txt';a.click()}
+function saveSettings(){try{localStorage.setItem('ghl-settings',JSON.stringify({inv:document.getElementById('inputInv').value,cshr:document.getElementById('inputCshr').value,autoInc:document.getElementById('chkAutoInc').checked,amt:rawAmt}))}catch(e){}}
+function loadSettings(){try{var s=JSON.parse(localStorage.getItem('ghl-settings'));if(s){if(s.inv)document.getElementById('inputInv').value=s.inv;if(s.cshr)document.getElementById('inputCshr').value=s.cshr;if(s.autoInc!==undefined)document.getElementById('chkAutoInc').checked=s.autoInc;if(s.amt){rawAmt=s.amt;updateAmtDisplay()}}}catch(e){}}
+function setConnected(state,label){connected=state;document.getElementById('statusPill').classList.toggle('on',state);document.getElementById('portLabel').textContent=label;document.getElementById('btnConnect').textContent=state?t('disconnect'):t('connect');document.getElementById('btnConnect').classList.toggle('active',state);document.getElementById('btnReset').style.display=state?'inline-block':'none';document.querySelectorAll('.btn-tx').forEach(function(b){b.disabled=!state})}
+
+async function forceReset(){try{cancelFlag=true;if(reader){try{await reader.cancel()}catch(e){}try{reader.releaseLock()}catch(e){}reader=null}if(writer){try{writer.releaseLock()}catch(e){}writer=null}if(port){try{await port.close()}catch(e){}port=null}txBusy=false;document.getElementById('btnStop').disabled=true;document.querySelectorAll('.btn-tx').forEach(function(b){b.disabled=true});setConnected(false,t('notConnected'));log(t('portReset'),'err');toast(t('portReset'),'#DC2626')}catch(e){log(t('portResetFail',e.message),'err')}}
+
+async function toggleConnection(){if(demoMode){toggleDemo();return}if(connected){await forceReset();return}try{port=await navigator.serial.requestPort();await port.open({baudRate:9600,dataBits:8,parity:'none',stopBits:1,flowControl:'none'});var info=port.getInfo();var label='Connected';if(info.usbVendorId)label='USB '+info.usbVendorId.toString(16).toUpperCase()+':'+info.usbProductId.toString(16).toUpperCase();writer=port.writable.getWriter();setConnected(true,label);log(t('connectedTo',label))}catch(e){if(e.name!=='NotFoundError')log(t('connFail',e.message),'err')}}
+function calcCheckDigit(data){var d=new Uint8Array(data);var rem=d.length%8;var padded=new Uint8Array(d.length+(rem?8-rem:0));padded.set(d);if(rem)padded.fill(0xFF,d.length);var chk=new Uint8Array(8);for(var i=0;i<padded.length;i+=8)for(var j=0;j<8;j++)chk[j]^=padded[i+j];return chk}
+function buildPacket(cmd,amt,inv,cshr){var amtStr=Math.round(amt*100).toString().padStart(12,'0');var invStr=inv.toString().padStart(6,'0');var cshrStr=cshr.toString().padStart(4,' ');var payload=cmd+amtStr+invStr+cshrStr;var pb=new TextEncoder().encode(payload);var chk=calcCheckDigit(pb);var pkt=new Uint8Array(1+pb.length+8+1);pkt[0]=STX;pkt.set(pb,1);pkt.set(chk,1+pb.length);pkt[pkt.length-1]=ETX;return pkt}
+function hexStr(arr){return Array.from(arr).map(function(b){return b.toString(16).toUpperCase().padStart(2,'0')}).join(' ')}
+function formatMoney(raw){var s=raw.replace(/[^0-9]/g,'');if(!s)return'0.00';return(parseInt(s)/100).toFixed(2)}
+function getVal(p,s,l){if(p.length<s+l)return'N/A';return new TextDecoder().decode(p.slice(s,s+l)).trim()}
+function formatCard(raw){if(raw==='N/A'||raw.length<2)return raw;try{var cl=parseInt(raw.substring(0,2));return raw.substring(2,2+cl)}catch(e){return raw}}
+function formatExpiry(yymm){if(!yymm||yymm==='N/A'||yymm.length!==4)return'Unknown';try{var yy=parseInt(yymm.substring(0,2));var mm=parseInt(yymm.substring(2,4));if(mm<1||mm>12)return'Unknown';return(2000+yy)+' '+(MONTHS[mm]||'?')}catch(e){return'Unknown'}}
+function rndHex(n){var r='';for(var i=0;i<n;i++)r+=(Math.floor(Math.random()*256)).toString(16).toUpperCase().padStart(2,'0')+' ';return r.trim()}
+
+async function doTx(cmd){
+  if(txBusy){toast('Transaction in progress...','#DC2626');return}
+  if(!connected){toast(t('notConnected'),'#DC2626');return}
+
+  var amt=cmd==='050'||cmd==='022'?0:rawAmt/100;
+  var inv=cmd==='020'||cmd==='050'?0:parseInt(document.getElementById('inputInv').value);
+  var cshr=document.getElementById('inputCshr').value;
+
+  if(amt===0&&cmd==='020'){toast("RM 0.00? Bro what are we buying, invisible air??",'#DB2777',4000);log("Nice try -- you can't buy nothing. Even air isn't free.",'egg');return}
+  var triggerRain=rawAmt>=1000000;
+
+  var pkt=buildPacket(cmd,amt,inv,cshr);
+  log('TX > '+hexStr(pkt),'tx');
+  var txName=t(CMD_NAMES[cmd]||'SALE');
+  log(t('txLabel',txName,amt.toFixed(2),String(inv)));
+
+  if(cmd==='020')toast(t('toastSwipe'),'#059669');
+  else if(cmd==='022')toast(t('toastVoid'),'#D97706');
+  else if(cmd==='026')toast(t('toastRefund'),'#DB2777');
+  else if(cmd==='050')toast(t('toastSettle'),'#2563EB');
+  saveSettings();
+  if(triggerRain){makeItRain();toast("WE GOT A BIG BALLER!!! Make it RAIN!!!",'#D97706',5000)}
+
+  if(demoMode){txBusy=true;document.getElementById('btnStop').disabled=false;document.querySelectorAll('.btn-tx').forEach(function(b){b.disabled=true});log(t('waiting'));cancelFlag=false;await new Promise(function(r){var to=setTimeout(r,2000+Math.random()*1500);var chk=setInterval(function(){if(cancelFlag){clearTimeout(to);clearInterval(chk);r()}},100)});if(!cancelFlag)demoResponse(cmd,amt);txBusy=false;document.getElementById('btnStop').disabled=true;document.querySelectorAll('.btn-tx').forEach(function(b){b.disabled=false});return}
+
+  try{await writer.write(pkt)}catch(e){log(t('writeErr',e.message),'err');return}
+  txBusy=true;cancelFlag=false;document.getElementById('btnStop').disabled=false;document.querySelectorAll('.btn-tx').forEach(function(b){b.disabled=true});log(t('waiting'));
+  try{var tr=port.readable.getReader();reader=tr;var buf=[];var to=setTimeout(function(){cancelFlag=true},65000);
+  while(true){if(cancelFlag){log(t('cancelled'),'err');break}var r=await tr.read();if(r.done)break;if(r.value){buf.push.apply(buf,r.value);if(r.value.includes(ETX))break}}
+  clearTimeout(to);tr.releaseLock();reader=null;txBusy=false;document.getElementById('btnStop').disabled=true;document.querySelectorAll('.btn-tx').forEach(function(b){b.disabled=false});
+  if(buf.length>0&&!cancelFlag){var rx=new Uint8Array(buf);log('RX < '+hexStr(rx),'rx');log('RX Payload Length: '+(rx.length-10)+' bytes');if(rx.length-10<125)log('WARN: Payload < 125. Firmware may be pre-v1.0.17','err');parseResponse(rx,cmd)}}
+  catch(e){log(t('writeErr',e.message),'err');txBusy=false;document.getElementById('btnStop').disabled=true;document.querySelectorAll('.btn-tx').forEach(function(b){b.disabled=false})}}
+
+function cancelWait(){cancelFlag=true;if(reader){try{reader.cancel()}catch(e){}}txBusy=false;toast(t('cancelled'),'#DC2626');log(t('cancelled'),'err');document.getElementById('btnStop').disabled=true;document.querySelectorAll('.btn-tx').forEach(function(b){b.disabled=!(connected||demoMode)})}
+
+function demoResponse(cmd,amt){
+  var cards=['04','05','08','10','11'];var tc=cards[Math.floor(Math.random()*cards.length)];
+  var tn=CARD_TYPES[tc];var auth=String(Math.floor(100000+Math.random()*900000));
+  var stan=String(Math.floor(1+Math.random()*999999)).padStart(6,'0');
+  var inv=document.getElementById('inputInv').value;var cshr=document.getElementById('inputCshr').value;
+  var amtCents=Math.round(amt*100).toString().padStart(12,'0');
+  var cardNum='1619************2345';
+  var now=new Date();var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+now.toLocaleTimeString('en-GB');
+  var txType=CMD_NAMES[cmd]||'SALE';
+
+  log('RX < 02 '+rndHex(35)+' 03','rx');
+  log('RX Payload Length: 135 bytes (DEMO)');
+  log(t('approved'),'ok');
+  toast(t('toastApproved'),'#059669');
+
+  var receiptText=
+'MERCHANT ID:  000000000012345\n'+
+'TERMINAL ID:  20991234\n'+
+'TIME:         '+ts+'\n'+
+'BATCH NO:     000001\n'+
+'\n------------------------------\n'+
+'STAN:         '+stan+' [Byte 65]\n'+
+'INVOICE (TRACE): '+inv+' [Byte 71]\n'+
+'------------------------------\n\n'+
+'TRANS TYPE:   '+txType+'\n'+
+'CASHIER ID:   '+cshr.toString().padStart(4,' ')+'\n\n'+
+'CARD NO:      '+cardNum+'\n'+
+'EXPIRY YYMM:  3202\n'+
+'EXPIRY:       2032 February\n'+
+'CARD TYPE:    '+tc+' ('+tn+')\n'+
+'AUTH CODE:    '+auth+'\n\n'+
+'------------------------------\n'+
+'GROSS AMT:    RM '+amt.toFixed(2)+'\n'+
+'NET AMT:      RM '+amt.toFixed(2)+'\n'+
+'------------------------------\n\n'+
+'        THANK YOU!\n\n'+
+'   *** DEMO TRANSACTION ***\n';
+
+  lastReceiptText=receiptText;
+  var o=document.getElementById('receiptOverlay');o.style.display='flex';
+  o.innerHTML='<div class="receipt-card"><h3>*** APPROVED ***</h3><pre>'+receiptText+'</pre><div class="actions"><button onclick="copyReceipt()">'+t('copyReceipt')+'</button><button onclick="printReceipt()">'+t('printReceipt')+'</button><button onclick="closeReceipt()">'+t('close')+'</button></div></div>';
+  if(document.getElementById('chkAutoInc').checked){var el=document.getElementById('inputInv');el.value=(parseInt(el.value)+1).toString().padStart(6,'0');saveSettings()}}
+
+function parseResponse(data,cmd){if(data.length<11)return;var payload=data.slice(1,-9);var err=getVal(payload,3,2);if(err==='00'){log(t('approved'),'ok');toast(t('toastApproved'),'#059669');showReceipt(payload,cmd);if(document.getElementById('chkAutoInc').checked){var el=document.getElementById('inputInv');el.value=(parseInt(el.value)+1).toString().padStart(6,'0');saveSettings()}}else{log(t('declined',err),'err');toast(t('toastDeclined',err),'#DC2626')}}
+
+function showReceipt(p,cmd){
+  var pL=p.length;var tc=pL>=33?new TextDecoder().decode(p.slice(31,33)):'??';var tn=CARD_TYPES[tc]||'UNKNOWN';
+  var rawExp=getVal(p,27,4);var readableExp=formatExpiry(rawExp);
+  var cardRaw=getVal(p,5,22);var cardFmt=formatCard(cardRaw).replace(/X/g,'*');
+  var txType=CMD_NAMES[cmd]||'SALE';var mid=pL>=119?getVal(p,104,15):'N/A';var tid=pL>=104?getVal(p,96,8):'N/A';
+  var batch=pL>=125?getVal(p,119,6):'N/A';var gross=formatMoney(getVal(p,41,12));var net=formatMoney(getVal(p,53,12));
+  var stan=getVal(p,65,6);var inv=getVal(p,71,6);var cshr=getVal(p,77,4);var auth=getVal(p,33,8);
+  var now=new Date();var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+now.toLocaleTimeString('en-GB');
+  var receiptText=
+'MERCHANT ID:  '+mid+'\nTERMINAL ID:  '+tid+'\nTIME:         '+ts+'\nBATCH NO:     '+batch+'\n\n------------------------------\nSTAN:         '+stan+' [Byte 65]\nINVOICE (TRACE): '+inv+' [Byte 71]\n------------------------------\n\nTRANS TYPE:   '+txType+'\nCASHIER ID:   '+cshr+'\n\nCARD NO:      '+cardFmt+'\nEXPIRY YYMM:  '+rawExp+'\nEXPIRY:       '+readableExp+'\nCARD TYPE:    '+tc+' ('+tn+')\nAUTH CODE:    '+auth+'\n\n------------------------------\nGROSS AMT:    RM '+gross+'\nNET AMT:      RM '+net+'\n------------------------------\n\n        THANK YOU!\n';
+  lastReceiptText=receiptText;var o=document.getElementById('receiptOverlay');o.style.display='flex';
+  o.innerHTML='<div class="receipt-card"><h3>*** APPROVED ***</h3><pre>'+receiptText+'</pre><div class="actions"><button onclick="copyReceipt()">'+t('copyReceipt')+'</button><button onclick="printReceipt()">'+t('printReceipt')+'</button><button onclick="closeReceipt()">'+t('close')+'</button></div></div>'}
+
+var lastReceiptText='';
+function closeReceipt(){document.getElementById('receiptOverlay').style.display='none'}
+function copyReceipt(){navigator.clipboard.writeText('*** APPROVED ***\n'+lastReceiptText);toast(t('logCopied'),'#333',1500)}
+function printReceipt(){var c='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Receipt</title><style>@page{size:80mm auto;margin:2mm}body{font-family:"Courier New",monospace;font-size:11px;line-height:1.5;margin:0;padding:4mm;width:72mm}h3{text-align:center;font-size:14px;margin:0 0 8px}pre{font-family:inherit;font-size:inherit;white-space:pre-wrap;margin:0}.footer{text-align:center;margin-top:12px;font-size:9px;color:#888}</style></head><body><h3>*** APPROVED ***</h3><pre>'+lastReceiptText+'</pre><div class="footer">GHL POS Simulator -- Web Serial</div></body></html>';var f=document.getElementById('printFrame');f.srcdoc=c;f.onload=function(){f.contentWindow.print()}}
+
+console.log('%c  deadboy18  ','font-size:20px;font-weight:bold;color:#fff;background:linear-gradient(90deg,#2563EB,#059669);padding:12px 24px;border-radius:8px');
+console.log('%cGHL POS Terminal Simulator -- Web Serial Edition','font-size:12px;color:#888;padding:4px');
+console.log('%c'+[
+'     _                 _ _                 _ ___  ',
+'    | |               | | |               / |__ \\ ',
+'  __| | ___  __ _  ___| | |__   ___  _   _| |  ) |',
+' / _` |/ _ \\/ _` |/ _` | \'_ \\ / _ \\| | | | | / / ',
+'| (_| |  __/ (_| | (_| | |_) | (_) | |_| | |/ /_ ',
+' \\__,_|\\___|\\__,_|\\__,_|_.__/ \\___/ \\__, |_|____)',
+'                                     __/ |        ',
+'                                    |___/         '
+].join('\n'),'font-family:monospace;font-size:10px;color:#059669');
+console.log('%cBuilt with caffeine and serial port pain.','font-size:11px;color:#D97706;font-style:italic');
+console.log('%cProlific PL2303 forever. FTDI never.','font-size:11px;color:#DC2626');
+
+try{var st=localStorage.getItem('ghl-theme');if(st==='dark'){dark=true;document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'}}catch(e){}
+try{var sl=localStorage.getItem('ghl-lang');if(sl&&L[sl]){lang=sl;document.getElementById('langSelect').value=lang}}catch(e){}
+applyLang();loadSettings();
+if(!('serial' in navigator)){document.getElementById('browserWarning').style.display='block';document.getElementById('btnConnect').disabled=true}
+</script>
+</body>
+</html>
