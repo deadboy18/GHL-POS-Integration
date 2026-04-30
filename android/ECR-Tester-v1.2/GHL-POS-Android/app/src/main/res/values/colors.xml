@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light theme -->
+    <color name="bg">#F8F9FB</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface2">#F1F3F5</color>
+    <color name="border">#E2E5EB</color>
+    <color name="text">#1A1F2E</color>
+    <color name="text2">#5C6478</color>
+    <color name="text3">#8E95A5</color>
+    <color name="orange">#F97316</color>
+    <color name="blue">#1E293B</color>
+    <color name="green">#059669</color>
+    <color name="red">#DC2626</color>
+    <color name="teal">#0D9488</color>
+</resources>

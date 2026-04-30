@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:fitsSystemWindows="true">
+
+    <!-- Top accent bar -->
+    <View android:layout_width="match_parent" android:layout_height="4dp" android:background="@color/blue" />
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:background="@color/surface">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="GHL POS"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/text" />
+
+        <Button
+            android:id="@+id/btnTheme"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="☀"
+            android:textSize="16sp"
+            android:background="@drawable/input_bg"
+            android:textColor="@color/text2"
+            android:layout_marginEnd="6dp" />
+
+        <Button
+            android:id="@+id/btnDemo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="▶"
+            android:textSize="14sp"
+            android:background="@drawable/input_bg"
+            android:textColor="@color/text2" />
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border" />
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Connection Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/card_bg"
+                android:padding="14dp"
+                android:layout_marginBottom="10dp">
+
+                <!-- Status dot -->
+                <View
+                    android:id="@+id/statusDot"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="@color/border"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Not connected"
+                    android:textSize="12sp"
+                    android:textColor="@color/text2"
+                    android:singleLine="true"
+                    android:ellipsize="end" />
+
+                <Button
+                    android:id="@+id/btnConnect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:minWidth="110dp"
+                    android:text="Connect USB"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/btn_settle"
+                    android:textAllCaps="false"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp" />
+            </LinearLayout>
+
+            <!-- Device info (hidden by default) -->
+            <TextView
+                android:id="@+id/tvDeviceInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/input_bg"
+                android:padding="8dp"
+                android:textSize="10sp"
+                android:textColor="@color/text3"
+                android:visibility="gone"
+                android:layout_marginBottom="10dp" />
+
+            <!-- Transaction Details Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_bg"
+                android:padding="16dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TRANSACTION DETAILS"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text3"
+                    android:letterSpacing="0.06"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount (ATM-style input)"
+                    android:textSize="12sp"
+                    android:textColor="@color/text2"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/etAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:background="@drawable/input_bg"
+                    android:padding="12dp"
+                    android:text="0.01"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text"
+                    android:gravity="end|center_vertical"
+                    android:fontFamily="monospace"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:inputType="none"
+                    android:cursorVisible="false" />
+
+                <!-- Quick amounts -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <Button android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="0.01" android:textSize="12sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:layout_marginEnd="4dp" android:onClick="onQuickAmount" android:tag="1" android:textAllCaps="false" />
+                    <Button android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="1.00" android:textSize="12sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:layout_marginEnd="4dp" android:onClick="onQuickAmount" android:tag="100" android:textAllCaps="false" />
+                    <Button android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="5.00" android:textSize="12sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:layout_marginEnd="4dp" android:onClick="onQuickAmount" android:tag="500" android:textAllCaps="false" />
+                    <Button android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="10.00" android:textSize="12sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:layout_marginEnd="4dp" android:onClick="onQuickAmount" android:tag="1000" android:textAllCaps="false" />
+                    <Button android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="50" android:textSize="12sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:layout_marginEnd="4dp" android:onClick="onQuickAmount" android:tag="5000" android:textAllCaps="false" />
+                    <Button android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:text="100" android:textSize="12sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:onClick="onQuickAmount" android:tag="10000" android:textAllCaps="false" />
+                </LinearLayout>
+
+                <!-- Invoice & Cashier row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="14dp">
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Invoice number" android:textSize="12sp" android:textColor="@color/text2" android:layout_marginBottom="4dp" />
+                        <EditText android:id="@+id/etInvoice" android:layout_width="match_parent" android:layout_height="44dp" android:background="@drawable/input_bg" android:padding="10dp" android:text="000001" android:textSize="14sp" android:fontFamily="monospace" android:textColor="@color/text" android:gravity="end|center_vertical" android:inputType="number" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cashier ID" android:textSize="12sp" android:textColor="@color/text2" android:layout_marginBottom="4dp" />
+                        <EditText android:id="@+id/etCashier" android:layout_width="match_parent" android:layout_height="44dp" android:background="@drawable/input_bg" android:padding="10dp" android:text="99" android:textSize="14sp" android:fontFamily="monospace" android:textColor="@color/text" android:gravity="end|center_vertical" android:inputType="text" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/cbAutoInc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Auto-increment invoice on approval"
+                    android:textSize="12sp"
+                    android:textColor="@color/text2"
+                    android:checked="true"
+                    android:layout_marginTop="8dp"
+                    android:minHeight="40dp" />
+            </LinearLayout>
+
+            <!-- Actions Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_bg"
+                android:padding="16dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ACTIONS"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text3"
+                    android:letterSpacing="0.06"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- 2x2 grid -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <Button android:id="@+id/btnSale" android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:text="SALE" android:textSize="16sp" android:textStyle="bold" android:textColor="#FFFFFF" android:background="@drawable/btn_sale" android:layout_marginEnd="6dp" android:enabled="false" />
+                    <Button android:id="@+id/btnVoid" android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:text="VOID" android:textSize="16sp" android:textStyle="bold" android:textColor="#FFFFFF" android:background="@drawable/btn_void" android:enabled="false" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <Button android:id="@+id/btnSettle" android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:text="SETTLEMENT" android:textSize="14sp" android:textStyle="bold" android:textColor="#FFFFFF" android:background="@drawable/btn_settle" android:layout_marginEnd="6dp" android:enabled="false" />
+                    <Button android:id="@+id/btnRefund" android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:text="REFUND" android:textSize="16sp" android:textStyle="bold" android:textColor="#FFFFFF" android:background="@drawable/btn_refund" android:enabled="false" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnStop"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Stop waiting for terminal"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/red"
+                    android:background="@drawable/btn_stop"
+                    android:enabled="false"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <!-- Reference Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_bg"
+                android:padding="16dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="REFERENCE" android:textSize="11sp" android:textStyle="bold" android:textColor="@color/text3" android:letterSpacing="0.06" android:layout_marginBottom="8dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Card codes" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/text" android:layout_marginBottom="2dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="04=Visa  05=MC  06=Diners  07=Amex\n08=MyDebit  09=JCB  10=UnionPay  11=eWallet" android:textSize="11sp" android:textColor="@color/text2" android:fontFamily="monospace" android:lineSpacingExtra="4dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Response codes" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/text" android:layout_marginTop="8dp" android:layout_marginBottom="2dp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="00=Approved  CT=Cancel/Timeout\n51=Insufficient  55=Wrong PIN\n54=Expired  91=Issuer down" android:textSize="11sp" android:textColor="@color/text2" android:fontFamily="monospace" android:lineSpacingExtra="4dp" />
+            </LinearLayout>
+
+            <!-- Log Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="COMMUNICATION LOG"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="@color/text3"
+                android:letterSpacing="0.06"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="4dp" />
+
+            <!-- Log toolbar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginBottom="6dp">
+                <Button android:id="@+id/btnCopyLog" android:layout_width="wrap_content" android:layout_height="34dp" android:text="Copy" android:textSize="11sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:layout_marginEnd="4dp" android:textAllCaps="false" android:paddingStart="12dp" android:paddingEnd="12dp" />
+                <Button android:id="@+id/btnSaveLog" android:layout_width="wrap_content" android:layout_height="34dp" android:text="Save" android:textSize="11sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:layout_marginEnd="4dp" android:textAllCaps="false" android:paddingStart="12dp" android:paddingEnd="12dp" />
+                <Button android:id="@+id/btnClearLog" android:layout_width="wrap_content" android:layout_height="34dp" android:text="Clear" android:textSize="11sp" android:background="@drawable/input_bg" android:textColor="@color/text2" android:textAllCaps="false" android:paddingStart="12dp" android:paddingEnd="12dp" />
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/logScroll"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@drawable/card_bg"
+                android:padding="12dp">
+                <TextView
+                    android:id="@+id/tvLog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    android:textColor="@color/text3"
+                    android:lineSpacingExtra="4dp" />
+            </ScrollView>
+
+            <!-- Footer -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GHL POS Android -- Protocol v1.0.17 -- deadboy18"
+                android:textSize="10sp"
+                android:textColor="@color/text3"
+                android:gravity="center"
+                android:padding="14dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
