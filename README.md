@@ -1,6 +1,10 @@
 # GHL POS Terminal Integration Toolkit
 
-A complete, open-source toolkit for integrating with **GHL payment terminals** (PAX A920 / L920) via RS232 serial communication. Includes working implementations in **C**, **Python**, **C#**, and **browser-based HTML** (Web Serial API), plus full protocol documentation, hardware wiring guides, and debugging tools.
+A complete, open-source toolkit for integrating with **GHL payment terminals** (PAX A920 / L920) via RS232 serial communication. Includes working implementations in **C**, **Python**, **C#**, **Android**, and **browser-based HTML** (Web Serial API), plus full protocol documentation, hardware wiring guides, and debugging tools.
+
+📱 **[Download Android APK](https://github.com/deadboy18/GHL-POS-Integration/releases/latest)** — test GHL terminals from your phone via USB OTG.
+
+🌐 **[Live Web Serial Demo](https://deadboy18.github.io/GHL-POS-Integration/web/)** — test from your browser, zero install.
 
 Built and tested in production with GHL Malaysia (UOB acquiring). The ECR protocol used here is standard across all GHL-configured PAX terminals regardless of region or acquiring bank.
 
@@ -24,6 +28,7 @@ This toolkit handles the **ECR (Electronic Cash Register) protocol** -- the seri
 ```
 GHL-POS-Integration/
 |
+|-- android/                Android app (USB OTG serial, PAX A920 / GHL)
 |-- c/                      Pure C implementation (Windows, for embedding in agents)
 |-- python/                 Python GUI simulator (tkinter, for testing/prototyping)
 |-- csharp/                 C# / .NET implementation (Visual Studio project)
@@ -61,6 +66,7 @@ You need a PAX A920 terminal on an L920-BE base station, connected to your PC vi
 
 | Implementation | Best for | Requirements |
 |---|---|---|
+| **Android** (`android/`) | Mobile testing via USB OTG | Android 5.0+, USB OTG cable |
 | **C** (`c/`) | Embedding into native agents (e.g., Sentec PMS) | Windows, GCC/MinGW |
 | **Python** (`python/`) | Rapid testing, GUI-based prototyping | Python 3, pyserial |
 | **C#** (`csharp/`) | .NET desktop POS applications | Visual Studio, .NET |
@@ -234,6 +240,28 @@ For a complete hex breakdown with a real captured transaction, see [docs/SAMPLE_
 ---
 
 ## Implementation details
+
+### Android (`android/`)
+
+Native Android app for testing GHL terminals via USB OTG. **[Download the APK](https://github.com/deadboy18/GHL-POS-Integration/releases/latest)** or build from source in Android Studio.
+
+Features:
+- USB OTG serial connection (Prolific PL2303, CH340, CP210x, FTDI)
+- Sale, Void, Settlement, Refund
+- ATM-style amount entry with quick amount buttons
+- Multi-language support (English, Bahasa Melayu, 中文)
+- Dark/Light theme toggle
+- Demo mode for testing without a terminal
+- Color-coded hex communication log with copy/share
+- Digital receipt popup with copy/share
+- Auto-increment invoice numbers
+- Haptic feedback
+- Auto-launch when USB adapter plugged in
+- ~15-20MB RAM, <2MB APK
+
+Hardware setup: Phone (USB-C) → OTG adapter → Prolific PL2303 USB-to-Serial → Custom RJ45 cable → GHL L920 terminal
+
+Requirements: Android 5.0+, USB OTG cable, Prolific PL2303 adapter.
 
 ### C (`c/`)
 
