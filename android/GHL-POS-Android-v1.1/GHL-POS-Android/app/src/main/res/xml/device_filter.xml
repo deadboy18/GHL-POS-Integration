@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <usb-device vendor-id="1659" product-id="8963" /> <!-- Prolific PL2303 -->
-    <usb-device vendor-id="1659" product-id="8961" /> <!-- Prolific PL2303GT -->
-    <usb-device vendor-id="6790" product-id="29987" /> <!-- CH340 -->
-    <usb-device vendor-id="4292" product-id="60000" /> <!-- CP210x -->
-</resources>
