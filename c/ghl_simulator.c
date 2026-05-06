@@ -100,6 +100,22 @@ const char* get_card_name(const char* code) {
     return "UNKNOWN";
 }
 
+// --- UTILITY: STRIP 2-BYTE LENGTH PREFIX FROM CARD NUMBER ---
+// GHL spec v1.0.17 Section 4.2: Card Number field (22 bytes)
+// "The first two bytes denote the length of the card number.
+//  Card number will be left-justified, and the extra bytes
+//  will be padded with zeroes."
+// Returns the card digit count (the length prefix value).
+int format_card(const char* raw, char* out) {
+    if (strlen(raw) < 2) { strcpy(out, raw); return 0; }
+    char len_str[3] = { raw[0], raw[1], '\0' };
+    int c_len = atoi(len_str);
+    if (c_len < 1 || c_len > 20) { strcpy(out, raw); return 0; }
+    strncpy(out, raw + 2, c_len);
+    out[c_len] = '\0';
+    return c_len;
+}
+
 void show_card_codes() {
     set_color(COLOR_CYAN);
     printf("\n--- CARD TYPE CODES ---\n");
@@ -179,6 +195,8 @@ void log_hex_breakdown(const unsigned char* data, int len) {
     
     extract_field(payload, payload_len, 5, 22, buf);
     write_log("Card No (22)  : %s", buf);
+    char dbg_card[23]; int dbg_len = format_card(buf, dbg_card);
+    write_log("  -> Parsed   : %s (%d digits)", dbg_card, dbg_len);
     
     extract_field(payload, payload_len, 27, 4, buf);
     write_log("Expiry (4)    : %s", buf);
@@ -239,6 +257,11 @@ void print_receipt(const unsigned char* data, int len) {
     extract_field(payload, payload_len, 71, 6, inv);
     extract_field(payload, payload_len, 77, 4, cshr);
     extract_field(payload, payload_len, 5, 22, card_no);
+    
+    // Strip 2-byte length prefix and zero-padding from card number
+    char card_fmt[23];
+    int card_digits = format_card(card_no, card_fmt);
+    
     extract_field(payload, payload_len, 27, 4, exp);
     extract_field(payload, payload_len, 31, 2, c_type);
     extract_field(payload, payload_len, 33, 8, auth);
@@ -269,7 +292,7 @@ void print_receipt(const unsigned char* data, int len) {
         "TRANS TYPE:   SALE\n"
         "CASHIER ID:   %s\n"
         "\n"
-        "CARD NO:      %s\n"
+        "CARD NO:      %s (%d digits)\n"
         "EXPIRY:       %s\n"
         "CARD TYPE:    %s (%s)\n"
         "AUTH CODE:    %s\n"
@@ -279,7 +302,7 @@ void print_receipt(const unsigned char* data, int len) {
         "-----------------------------------------\n"
         "               THANK YOU!                \n"
         "=========================================\n",
-        mid, tid, time_str, batch, stan, inv, cshr, card_no, exp, c_type, get_card_name(c_type), auth, fmt_gross, fmt_net
+        mid, tid, time_str, batch, stan, inv, cshr, card_fmt, card_digits, exp, c_type, get_card_name(c_type), auth, fmt_gross, fmt_net
     );
 
     set_color(COLOR_GREEN);
