@@ -150,6 +150,18 @@ class GHLParser:
             raw_type = payload[31:33].decode('ascii', errors='ignore')
         card_desc = GHLParser.CARD_TYPES.get(raw_type, "UNKNOWN")
 
+        # Card Number Helper
+        # GHL spec v1.0.17 Section 4.2: first 2 bytes = card digit count
+        def format_card(raw):
+            if raw == "N/A" or len(raw) < 2: return raw, 0
+            try:
+                c_len = int(raw[:2])
+                return raw[2:2+c_len], c_len
+            except: return raw, 0
+
+        raw_card = get_val(5, 22)
+        card_formatted, card_digits = format_card(raw_card)
+
         # Expiry Helper
         raw_exp = get_val(27, 4)
         try:
@@ -161,7 +173,8 @@ class GHLParser:
         data = {
             "command": get_val(0, 3),
             "error_code": get_val(3, 2),
-            "card_number": get_val(5, 22),
+            "card_number_raw": raw_card,
+            "card_number": f"{card_formatted} ({card_digits} digits)",
             "expiry_raw": raw_exp,
             "expiry_fmt": exp_fmt,
             "card_type_code": raw_type,

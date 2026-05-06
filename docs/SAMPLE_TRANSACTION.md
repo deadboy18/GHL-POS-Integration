@@ -112,7 +112,7 @@ Payload (96 bytes):
 |---|---|---|---|---|
 | 0-2 | `30 32 31` | `021` | Response code | Sale response |
 | 3-4 | `30 30` | `00` | Error code | **APPROVED** |
-| 5-26 | `34 30...` | `40001234XXXXXX9876...` | Card number | Masked debit card |
+| 5-26 | `34 30...` | `40001234XXXXXX9876...` | Card number | First 2 bytes = digit count, then masked PAN, then zero-padding |
 | 27-30 | `33 32 30 32` | `3202` | Card expiry | February 2032 |
 | 31-32 | `30 38` | `08` | Card type | **MyDebit** |
 | 33-40 | `31 34 32 32 30 33 20 20` | `142203  ` | Auth code | Bank authorization code |
@@ -166,7 +166,7 @@ INVOICE:      000030
 TRANS TYPE:   SALE
 CASHIER ID:   99
 
-CARD NO:      **** **** **** 9876
+CARD NO:      **** **** **** 9876 (16 digits)
 EXPIRY:       02/32
 CARD TYPE:    08 (MYDEBIT)
 AUTH CODE:    142203

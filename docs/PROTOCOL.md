@@ -127,7 +127,7 @@ The RX payload varies in length depending on firmware version:
 |---|---|---|---|
 | 0 | 3 | Response code | `021`=Sale, `023`=Void, `027`=Refund, `051`=Settlement |
 | 3 | 2 | Error/approval code | `00`=approved, see error code table |
-| 5 | 22 | Card number | Masked, includes 2-byte length prefix |
+| 5 | 22 | Card number | First 2 bytes = digit count (e.g. `16`), followed by masked PAN left-justified, zero-padded. Example: `16549186XXXXXX06410000` → 16-digit card `549186XXXXXX0641` |
 | 27 | 4 | Card expiry | Format: YYMM (e.g., `3202` = Feb 2032) |
 | 31 | 2 | Card type code | See card code table |
 | 33 | 8 | Authorization code | Bank-issued approval code |

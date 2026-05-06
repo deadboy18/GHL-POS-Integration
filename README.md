@@ -125,7 +125,7 @@ The response payload is **96-125+ bytes** depending on terminal firmware:
 |---|---|---|
 | 0-2 | 3 | Response code (e.g., `021` = Sale response) |
 | 3-4 | 2 | Error/approval code (`00` = success) |
-| 5-26 | 22 | Masked card number |
+| 5-26 | 22 | Masked card number (first 2 bytes = digit count, see [PROTOCOL.md](docs/PROTOCOL.md)) |
 | 27-30 | 4 | Card expiry (YYMM) |
 | 31-32 | 2 | Card type code |
 | 33-40 | 8 | Bank authorization code |
@@ -231,7 +231,7 @@ After the cardholder taps/inserts their card and the bank approves:
 
 Key fields extracted:
 - Bytes 3-4: `30 30` = ASCII "00" = **Approved**
-- Bytes 5-26: Masked card number
+- Bytes 5-26: Masked card number (bytes 5-6 = digit count, e.g. `16` = 16-digit card, followed by the masked PAN, zero-padded)
 - Bytes 33-40: Authorization code from the bank
 - Bytes 41-52: Gross amount (should match what you sent)
 
