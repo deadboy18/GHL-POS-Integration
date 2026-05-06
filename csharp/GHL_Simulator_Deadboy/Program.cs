@@ -336,6 +336,49 @@ namespace GHL_Simulator_Simple_v12
             catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
         }
 
+        // --- Card Type Mapping (GHL spec v1.0.17, Appendix B) ---
+        private static readonly Dictionary<string, string> CardTypes = new Dictionary<string, string>
+        {
+            {"04", "VISA"}, {"05", "MASTERCARD"}, {"06", "DINERS"},
+            {"07", "AMEX"}, {"08", "MYDEBIT"}, {"09", "JCB"},
+            {"10", "UNIONPAY"}, {"11", "E-WALLET"}
+        };
+
+        private string GetCardName(string code) =>
+            CardTypes.ContainsKey(code) ? CardTypes[code] : "UNKNOWN";
+
+        /// <summary>
+        /// Strips the 2-byte length prefix from the 22-byte card number field.
+        /// GHL spec v1.0.17 Section 4.2: "The first two bytes denote the length
+        /// of the card number. Card number will be left-justified, and the extra
+        /// bytes will be padded with zeroes."
+        /// </summary>
+        private string FormatCard(string raw, out int digits)
+        {
+            digits = 0;
+            if (string.IsNullOrEmpty(raw) || raw.Length < 2) return raw;
+            if (int.TryParse(raw.Substring(0, 2), out int cLen) && cLen >= 1 && cLen <= 20)
+            {
+                digits = cLen;
+                return raw.Substring(2, Math.Min(cLen, raw.Length - 2));
+            }
+            return raw;
+        }
+
+        private string GetField(string payload, int start, int length)
+        {
+            if (payload.Length >= start + length)
+                return payload.Substring(start, length).Trim();
+            return "N/A";
+        }
+
+        private string FormatMoney(string raw)
+        {
+            if (long.TryParse(raw.Trim(), out long cents))
+                return (cents / 100.0).ToString("F2");
+            return "0.00";
+        }
+
         private void ParseResponse(byte[] data)
         {
             try
@@ -344,12 +387,55 @@ namespace GHL_Simulator_Simple_v12
                 string ascii = Encoding.ASCII.GetString(data);
                 ascii = ascii.Replace("\x02", "").Replace("\x03", "");
 
+                // Strip the 8-byte check digit at the end
+                if (ascii.Length > 8)
+                    ascii = ascii.Substring(0, ascii.Length - 8);
+
                 if (ascii.Length < 5) return;
-                string errCode = ascii.Substring(3, 2);
+                string errCode = GetField(ascii, 3, 2);
 
                 if (errCode == "00")
                 {
-                    MessageBox.Show("TRANSACTION APPROVED!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Parse all response fields
+                    string cardRaw   = GetField(ascii, 5, 22);
+                    string card      = FormatCard(cardRaw, out int cardDigits);
+                    string expiry    = GetField(ascii, 27, 4);
+                    string cardType  = GetField(ascii, 31, 2);
+                    string auth      = GetField(ascii, 33, 8);
+                    string gross     = FormatMoney(GetField(ascii, 41, 12));
+                    string net       = FormatMoney(GetField(ascii, 53, 12));
+                    string stan      = GetField(ascii, 65, 6);
+                    string inv       = GetField(ascii, 71, 6);
+                    string cshr      = GetField(ascii, 77, 4);
+                    string cardName  = ascii.Length >= 96  ? GetField(ascii, 81, 15) : "N/A";
+                    string tid       = ascii.Length >= 104 ? GetField(ascii, 96, 8)  : "N/A";
+                    string mid       = ascii.Length >= 119 ? GetField(ascii, 104, 15): "N/A";
+                    string batch     = ascii.Length >= 125 ? GetField(ascii, 119, 6) : "N/A";
+
+                    string receipt =
+                        "*** APPROVED ***\n\n" +
+                        $"MERCHANT ID:  {mid}\n" +
+                        $"TERMINAL ID:  {tid}\n" +
+                        $"TIME:         {DateTime.Now:yyyy-MM-dd HH:mm:ss}\n" +
+                        $"BATCH NO:     {batch}\n" +
+                        "------------------------------\n" +
+                        $"STAN:         {stan}\n" +
+                        $"INVOICE:      {inv}\n" +
+                        "------------------------------\n" +
+                        $"CASHIER ID:   {cshr}\n\n" +
+                        $"CARD NO:      {card} ({cardDigits} digits)\n" +
+                        $"EXPIRY:       {expiry}\n" +
+                        $"CARD TYPE:    {cardType} ({GetCardName(cardType)})\n" +
+                        $"AUTH CODE:    {auth}\n" +
+                        "------------------------------\n" +
+                        $"GROSS AMT:    RM {gross}\n" +
+                        $"NET AMT:      RM {net}\n" +
+                        "------------------------------\n" +
+                        "\n        THANK YOU!\n";
+
+                    Log(receipt);
+                    MessageBox.Show(receipt, "APPROVED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                     if (chkAutoInc.Checked)
                     {
                         int current = int.Parse(txtInvoice.Text);

@@ -201,7 +201,7 @@ function buildPacket(cmd,amt,inv,cshr){var amtStr=Math.round(amt*100).toString()
 function hexStr(arr){return Array.from(arr).map(function(b){return b.toString(16).toUpperCase().padStart(2,'0')}).join(' ')}
 function formatMoney(raw){var s=raw.replace(/[^0-9]/g,'');if(!s)return'0.00';return(parseInt(s)/100).toFixed(2)}
 function getVal(p,s,l){if(p.length<s+l)return'N/A';return new TextDecoder().decode(p.slice(s,s+l)).trim()}
-function formatCard(raw){if(raw==='N/A'||raw.length<2)return raw;try{var cl=parseInt(raw.substring(0,2));return raw.substring(2,2+cl)}catch(e){return raw}}
+function formatCard(raw){if(raw==='N/A'||raw.length<2)return{card:raw,digits:0};try{var cl=parseInt(raw.substring(0,2));return{card:raw.substring(2,2+cl),digits:cl}}catch(e){return{card:raw,digits:0}}}
 function formatExpiry(yymm){if(!yymm||yymm==='N/A'||yymm.length!==4)return'Unknown';try{var yy=parseInt(yymm.substring(0,2));var mm=parseInt(yymm.substring(2,4));if(mm<1||mm>12)return'Unknown';return(2000+yy)+' '+(MONTHS[mm]||'?')}catch(e){return'Unknown'}}
 function rndHex(n){var r='';for(var i=0;i<n;i++)r+=(Math.floor(Math.random()*256)).toString(16).toUpperCase().padStart(2,'0')+' ';return r.trim()}
 
@@ -288,13 +288,13 @@ function parseResponse(data,cmd){if(data.length<11)return;var payload=data.slice
 function showReceipt(p,cmd){
   var pL=p.length;var tc=pL>=33?new TextDecoder().decode(p.slice(31,33)):'??';var tn=CARD_TYPES[tc]||'UNKNOWN';
   var rawExp=getVal(p,27,4);var readableExp=formatExpiry(rawExp);
-  var cardRaw=getVal(p,5,22);var cardFmt=formatCard(cardRaw).replace(/X/g,'*');
+  var cardRaw=getVal(p,5,22);var cardObj=formatCard(cardRaw);var cardFmt=cardObj.card.replace(/X/g,'*');var cardDigits=cardObj.digits;
   var txType=CMD_NAMES[cmd]||'SALE';var mid=pL>=119?getVal(p,104,15):'N/A';var tid=pL>=104?getVal(p,96,8):'N/A';
   var batch=pL>=125?getVal(p,119,6):'N/A';var gross=formatMoney(getVal(p,41,12));var net=formatMoney(getVal(p,53,12));
   var stan=getVal(p,65,6);var inv=getVal(p,71,6);var cshr=getVal(p,77,4);var auth=getVal(p,33,8);
   var now=new Date();var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+now.toLocaleTimeString('en-GB');
   var receiptText=
-'MERCHANT ID:  '+mid+'\nTERMINAL ID:  '+tid+'\nTIME:         '+ts+'\nBATCH NO:     '+batch+'\n\n------------------------------\nSTAN:         '+stan+' [Byte 65]\nINVOICE (TRACE): '+inv+' [Byte 71]\n------------------------------\n\nTRANS TYPE:   '+txType+'\nCASHIER ID:   '+cshr+'\n\nCARD NO:      '+cardFmt+'\nEXPIRY YYMM:  '+rawExp+'\nEXPIRY:       '+readableExp+'\nCARD TYPE:    '+tc+' ('+tn+')\nAUTH CODE:    '+auth+'\n\n------------------------------\nGROSS AMT:    RM '+gross+'\nNET AMT:      RM '+net+'\n------------------------------\n\n        THANK YOU!\n';
+'MERCHANT ID:  '+mid+'\nTERMINAL ID:  '+tid+'\nTIME:         '+ts+'\nBATCH NO:     '+batch+'\n\n------------------------------\nSTAN:         '+stan+' [Byte 65]\nINVOICE (TRACE): '+inv+' [Byte 71]\n------------------------------\n\nTRANS TYPE:   '+txType+'\nCASHIER ID:   '+cshr+'\n\nCARD NO:      '+cardFmt+' ('+cardDigits+' digits)\nEXPIRY YYMM:  '+rawExp+'\nEXPIRY:       '+readableExp+'\nCARD TYPE:    '+tc+' ('+tn+')\nAUTH CODE:    '+auth+'\n\n------------------------------\nGROSS AMT:    RM '+gross+'\nNET AMT:      RM '+net+'\n------------------------------\n\n        THANK YOU!\n';
   lastReceiptText=receiptText;var o=document.getElementById('receiptOverlay');o.style.display='flex';
   o.innerHTML='<div class="receipt-card"><h3>*** APPROVED ***</h3><pre>'+receiptText+'</pre><div class="actions"><button onclick="copyReceipt()">'+t('copyReceipt')+'</button><button onclick="printReceipt()">'+t('printReceipt')+'</button><button onclick="closeReceipt()">'+t('close')+'</button></div></div>'}
 

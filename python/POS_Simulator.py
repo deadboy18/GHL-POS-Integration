@@ -126,7 +126,7 @@ INVOICE (TRACE): {data_dict.get('invoice', '000000')} [Byte 71]
 TRANS TYPE:   {data_dict.get('type', 'SALE')}
 CASHIER ID:   {data_dict.get('cashier', '----')}
 
-CARD NO:      {data_dict.get('card', 'XXXX')}
+CARD NO:      {data_dict.get('card', 'XXXX')} ({data_dict.get('card_digits', 0)} digits)
 EXPIRY YYMM:  {raw_exp}
 EXPIRY:       {readable_exp}
 CARD TYPE:    {data_dict.get('card_scheme', 'UNKNOWN')}
@@ -475,12 +475,13 @@ class POSApp:
                 except: return "0.00"
             
             # Parse Card Number: remove length prefix and padding
+            # GHL spec v1.0.17 Section 4.2: first 2 bytes = card digit count
             def format_card(raw):
-                if raw == "N/A" or len(raw) < 2: return raw
+                if raw == "N/A" or len(raw) < 2: return raw, 0
                 try:
                     c_len = int(raw[:2])
-                    return raw[2:2+c_len] # Return readable
-                except: return raw
+                    return raw[2:2+c_len], c_len
+                except: return raw, 0
 
             # Parse Card Scheme Code (Index 31-33)
             # User request: Show "08 (MyDebit)" format
@@ -492,9 +493,11 @@ class POSApp:
             display_card_type = f"{raw_type_code} ({card_name_str})"
 
             # --- DATA MAPPING based on Source 254 ---
+            card_formatted, card_digits = format_card(get_val(5, 22).replace('X', '*'))
             d_dict = {
                 "type": "SALE", 
-                "card":         format_card(get_val(5, 22).replace('X', '*')), 
+                "card":         card_formatted,
+                "card_digits":  card_digits,
                 "expiry":       get_val(27, 4),
                 
                 # Shows Number + Name
